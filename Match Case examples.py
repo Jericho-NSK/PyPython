@@ -13,11 +13,10 @@ def pi_func(x):
         case _:
             print(f'1.3) Wrong value {x}')
 
-
-if __name__ == '__main__':
-    pi_func(Pi)
-    pi_func(math.pi)
-    pi_func(3.141)
+# if __name__ == '__main__':
+#     pi_func(Pi)
+#     pi_func(math.pi)
+#     pi_func(3.141)
 
     # ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -33,11 +32,10 @@ def mail_validation(s):
         case _:
             return f'2.3) Wrong name for {s}!'
 
-
-if __name__ == '__main__':
-    print(mail_validation('Yandex@yandex.ua'))
-    print(mail_validation('User.yandex@ya.ru'))
-    print(mail_validation('User@yandex-team.com'))
+# if __name__ == '__main__':
+    # print(mail_validation('Yandex@yandex.ua'))
+    # print(mail_validation('User.yandex@ya.ru'))
+    # print(mail_validation('User@yandex-team.com'))
 
     # ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -53,11 +51,10 @@ def calculate(x: int | float, y: int | float, operator: str) -> str | int | floa
     return f'3.1) {_}'  # выполняется если нет return в case, который вернул True. например если вместо return вызывается print, прописан pass.
     # сюда попадают переменные из УСПЕШНОГО case, условия в котором вернули True, тогда сохранились переменные из этого case
 
-
-if __name__ == '__main__':
-    print(calculate(3, 5, '-'))
-    print(calculate(2.4, 1.1, '+'))
-    print(calculate(6, 2, '*'))
+# if __name__ == '__main__':
+    # print(calculate(3, 5, '-'))
+    # print(calculate(2.4, 1.1, '+'))
+    # print(calculate(6, 2, '*'))
 
     # ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -76,11 +73,11 @@ def run_action(user_input: str) -> None:
             print('4.4) Wrong command')
 
 
-if __name__ == '__main__':
-    run_action('left 100')
-    run_action('shoot 100 200 3 444')
-    run_action('quit')
-    run_action('left100')
+# if __name__ == '__main__':
+#     run_action('left 100')
+#     run_action('shoot 100 200 3 444')
+#     run_action('quit')
+#     run_action('left100')
 
     # ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -116,13 +113,14 @@ input2 = UserInput('forward', 666)
 input3 = {'action': 'right', 'value': 300}
 input4 = UserInput('top', 50)
 
-if __name__ == '__main__':
-    run(input1)
-    run(input2)
-    run(input3)
-    run(input4)
 
-    # ------------------------------------------------------------------------------------------------------------------------------------------------
+# if __name__ == '__main__':
+#     run(input1)
+#     run(input2)
+#     run(input3)
+#     run(input4)
+
+# ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 def parse_response(value):  # функция проверки ответа от сети, их обработка
@@ -154,15 +152,15 @@ def parse_response(value):  # функция проверки ответа от 
             raise ValueError(f'Unknown value: {value}')
 
 
-if __name__ == '__main__':
-    a = {'key': 1000, 'id': 999}
-    b = ['error', 'Slow network connection']
-    c = {'meta': {'id': 999}}
-    d = {'meta': {'code': 200, 'error': 'no'}, 'info': [{'allowed': 'yes'}, 300]}
-    e = ({10, 11}, 5)
-    print('6)', parse_response(d))
+# if __name__ == '__main__':
+#     a = {'key': 1000, 'id': 999}
+#     b = ['error', 'Slow network connection']
+#     c = {'meta': {'id': 999}}
+#     d = {'meta': {'code': 200, 'error': 'no'}, 'info': [{'allowed': 'yes'}, 300]}
+#     e = ({10, 11}, 5)
+#     print('6)', parse_response(d))
 
-    # ------------------------------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 def check(value: tuple):
@@ -183,14 +181,14 @@ def check(value: tuple):
             raise ValueError('Expected a tuple!')
 
 
-if __name__ == '__main__':
-    a = ('Anna', 22, 100_000)
-    b = ('Helen', 21, 100_000)
-    c = (1, 2, 3, 4, 'Something')
-    d = (1, 2, 3, 4, 5, 'Something else')
-    print('7)', check(c))
+# if __name__ == '__main__':
+#     a = ('Anna', 22, 100_000)
+#     b = ('Helen', 21, 100_000)
+#     c = (1, 2, 3, 4, 'Something')
+#     d = (1, 2, 3, 4, 5, 'Something else')
+#     print('7)', check(c))
 
-    # ------------------------------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 def names(value: str | list | tuple | dict) -> str:
@@ -211,23 +209,25 @@ def names(value: str | list | tuple | dict) -> str:
     # сюда попадают переменные из УСПЕШНОГО case, условия в котором вернули True, тогда сохранились переменные из этого case
 
 
-if __name__ == '__main__':
-    print('8)', names('John Doe'))
-    assert names(('John', 'Doe')) == 'Name: John, surname: Doe'
-    assert names(['John', 'Doe']) == 'Name: John, surname: Doe'
-    assert names({'name': 'John',
-                  'surname': 'Doe'
-                  }) == 'Name: John, surname: Doe'
-    assert names('John Doe') == 'Name: John, surname: Doe'
-    assert names(['Doe']) == 'Error'
-    assert names(('John', 'Doe', 'Doe')) == 'Error'
-    assert names({'a': 'John', 'b': 'Doe'}) == 'Error'
-    assert names('John Doe Doe') == 'Error'
-    assert names({'surname': 'Doe',
-                  'name': 'John',
-                  'salary': 100_000}) == 'Error'
+assert names(('John', 'Doe')) == 'Name: John, surname: Doe'
+assert names(['John', 'Doe']) == 'Name: John, surname: Doe'
+assert names({'name': 'John',
+              'surname': 'Doe'
+              }) == 'Name: John, surname: Doe'
+assert names('John Doe') == 'Name: John, surname: Doe'
+assert names(['Doe']) == 'Error'
+assert names(('John', 'Doe', 'Doe')) == 'Error'
+assert names({'a': 'John', 'b': 'Doe'}) == 'Error'
+assert names('John Doe Doe') == 'Error'
+assert names({'surname': 'Doe',
+              'name': 'John',
+              'salary': 100_000}) == 'Error'
 
-    # ------------------------------------------------------------------------------------------------------------------------------------------------
+
+# if __name__ == '__main__':
+#     print('8)', names('John Doe'))
+
+# ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 def request_validation(request):

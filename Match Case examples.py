@@ -1,22 +1,37 @@
 import math
 
-Pi = 3.14  # внешние константы НЕ переносятся в case, там создадутся новые переменные с таким же именем
+
+class PiNum:
+    Pi = 3.142
 
 
-def pi_func(x):
+Pi = 3.14  # внешние константы НЕ переносятся в case, там создадутся новые переменные с таким же именем. внешняя константа будет проверяться в гарде.
+#  внешнюю константу можно указывать как в глобальной области видимости, так и в локальной, внутри функции между def и match
+
+
+def pi_func(x, min_value=3.140, max_value=3.142):
+    if isinstance(x, float | int) and not min_value <= x <= max_value:  # гард можно вынести до проверок если для каждой проверки он повторяется
+        return print(f'1.1) Wrong value {x} (too small, too big, not float or not int)')  # без return будет дополнительно попадание в wildcard
+
     match x:
         case pi if pi == Pi:  # нельзя передать одну переменную, будет аналогично wildcard. гард должен выполнить проверку чтобы работало.
-            # создастся новая переменная pi и в нее запишется переданное значение x. затем гард сравнит ее со значением pi из глобальной области
-            print(f'1.1) {pi}')
+            # создастся новая переменная pi и в нее запишется переданное значение x. затем гард сравнит ее со значением pi из глобальной области.
+            # можно записать в виде float(pi) as x if x == Pi, то есть выполнить проверку на тип, присвоить переменной и сравнить её с константой
+            print(f'1.2) {pi} from const')
         case math.pi:  # если вводятся имена с точкой, то будет не создание новой переменной, а поиск в верхних областях видимости и модулях
-            print(f'1.2) {x:=.5f}')
-        case _:
-            print(f'1.3) Wrong value {x}')
+            print(f'1.3) {x:=.5f} from module')
+        case PiNum.Pi:  # можно использовать класс для ввода переменной через точку. аналогично использованию модуля
+            print(f'1.4) {PiNum.Pi} from class')
+        case _:  # из-за общей проверки (гарда) сюда попадет только тип данных не float и не int в диапазоне от min_value до max_value
+            print(f'1.5) Wrong value {x}')
+
 
 # if __name__ == '__main__':
+#     pi_func(333)
 #     pi_func(Pi)
 #     pi_func(math.pi)
-#     pi_func(3.141)
+#     pi_func(PiNum.Pi)
+#     pi_func('3.14')
 
     # ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -48,13 +63,15 @@ def calculate(x: int | float, y: int | float, operator: str) -> str | int | floa
             _ = x - y
         case _:  # wildcard, выполняется если не совпали шаблоны выше
             return '3.2) Unknown operation'
-    return f'3.1) {_}'  # выполняется если нет return в case, который вернул True. например если вместо return вызывается print, прописан pass.
-    # сюда попадают переменные из УСПЕШНОГО case, условия в котором вернули True, тогда сохранились переменные из этого case
+
+    return f'3.1) {_} success matching'  # выполняется если нет return в case, который вернул True. например если вместо return вызывается print или
+    # прописан pass. сюда попадают переменные из УСПЕШНОГО case, условия в котором вернули True, тогда сохранились переменные из этого case
+
 
 # if __name__ == '__main__':
-    # print(calculate(3, 5, '-'))
-    # print(calculate(2.4, 1.1, '+'))
-    # print(calculate(6, 2, '*'))
+#     print(calculate(3, 5, '-'))
+#     print(calculate(2.4, 1.1, '+'))
+#     print(calculate(6, 2, '*'))
 
     # ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -127,7 +144,8 @@ def parse_response(value):  # функция проверки ответа от 
     match value:
         case {'key': 1000, **rest}:  # в словаре должен быть ключ 'key' со значением 1000 и какие-то еще значения,
             # которые будут распакованы в словарь rest. из него уже выводится значение ключа 'id'.
-            # нельзя использовать '**_', это переменная, а не словарь. для распаковки словаря нужно использовать например rest (так в документации).
+            # можно использовать **kwargs, но **rest используется в примерах match case в документации PEP 636 https://peps.python.org/pep-0636/
+            # нельзя использовать '**_', это переменная, а не словарь. для распаковки словаря нужно использовать например **rest.
             # то есть выводим 'id' только в том случае, если в исходном словаре есть еще и ключ 'key'
             return rest['id']
         case ('error', message) | ('error', message, *_):  # ждем или последовательность из 2 элементов, первый это 'error', второй это сообщение.
@@ -204,6 +222,7 @@ def names(value: str | list | tuple | dict) -> str:
             name, surname = lst
         case _:  # wildcard или любой другой набор символов
             return 'Error'
+
     return f'Name: {name}, surname: {surname}'  # выполняется если нет return в case, который вернул True.
     # например если вместо return вызывается print или pass.
     # сюда попадают переменные из УСПЕШНОГО case, условия в котором вернули True, тогда сохранились переменные из этого case
@@ -239,7 +258,7 @@ def request_validation(request):
         case {'url': url, 'method': method, 'timeout': 1000 | 2000 as timeout}:  # аналогично, но без проверки на тип данных и длины словаря.
             #  дополнительно проверяется значение ключа timeout, которое должно быть равно 1000 или 2000
             print(f'9.2) Request URL: {url}, method: {method}, timeout: {timeout}')
-        case {'timeout': 100 as timeout, **rest} | {'timeout': 200 as timeout, **rest}:  # проверяется наличие ключа timeout.
+        case {'timeout': 100 as timeout, **rest} | {'timeout': 200 as timeout, **rest}:  # проверяется наличие ключа timeout. **rest исп-ся в PEP 636
             # аналогичная проверка значения ключа timeout (100 или 200), но через два отдельных шаблона. переменные в шаблонах должны совпадать!
             # все остальные ключи запаковываются в словарь rest. при выводе словарь распаковывается через генератор списков
             print(f'9.3) Timeout is {timeout} for', *[f'{i.upper()}: {j}' for i, j in rest.items() if i == 'url'])
@@ -261,11 +280,11 @@ def request_validation(request):
             print(f'9.8) Wrong request: {request}')
 
 
-if __name__ == '__main__':
-    request_validation({'url': 'https://ya.ru', 'method': 'GET'})
-    request_validation({'url': 'https://ya.ru', 'method': None, 'timeout': 1000})
-    request_validation({'url': 'https://ya.ru', 'method': None, 'timeout': 200})
-    request_validation({'url': 'https://ya.ru', 'method': None})
-    request_validation({'url': 'https://ya.ru', 'method': None, 'timeout': 10, 'date': None})
-    request_validation({'id': 1, 'method': None, 'data': [2023, {'url': 'https://ya.ru', 'login': 'Login'}], 'timeout': 10})
-    request_validation({'mail', 'login', 'password'})
+# if __name__ == '__main__':
+#     request_validation({'url': 'https://ya.ru', 'method': 'GET'})
+#     request_validation({'url': 'https://ya.ru', 'method': None, 'timeout': 1000})
+#     request_validation({'url': 'https://ya.ru', 'method': None, 'timeout': 200})
+#     request_validation({'url': 'https://ya.ru', 'method': None})
+#     request_validation({'url': 'https://ya.ru', 'method': None, 'timeout': 10, 'date': None})
+#     request_validation({'id': 1, 'method': None, 'data': [2023, {'url': 'https://ya.ru', 'login': 'Login'}], 'timeout': 10})
+#     request_validation({'mail', 'login', 'password'})

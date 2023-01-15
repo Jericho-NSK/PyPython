@@ -1,11 +1,12 @@
 from turtle import Turtle, Screen
 
-from Color import Colors
+from Colors import Colors
 from Mover import Mover
 from Speed import Speed
+from Control import Control
 
 
-class Pointer(Turtle, Speed, Colors, Mover):
+class Pointer(Control, Mover, Speed, Colors, Turtle):
     def __init__(self):
         super().__init__()
         self.default_values()
@@ -17,4 +18,3 @@ class Pointer(Turtle, Speed, Colors, Mover):
 trt = Pointer()
 Screen().listen()
 Screen().mainloop()
-Screen().update()

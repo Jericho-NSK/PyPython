@@ -7,8 +7,8 @@ class Colors:
     _size = 3
     _back_ground_color = 'white'
 
-
     def __init__(self):
+        super().__init__()
         self.Color = self._color
 
     @property
@@ -22,6 +22,13 @@ class Colors:
         else:
             self.random_color()
 
+    def hidding(self):
+        if self.isvisible():
+            self.hideturtle()
+        else:
+            self.showturtle()
+
+
     def random_color(self):
         colormode(self.__colormode)
         r = randint(0, self.__colormode)
@@ -32,10 +39,9 @@ class Colors:
         self.fillcolor(self._color)
 
     def default_values(self):
-        super().default_values()
         self.random_color()
         self.pensize(self._size)
         self.Color = self._color
         self.fillcolor(self._color)
         bgcolor(self._back_ground_color)
-        Screen().onkey(self.random_color, 'space')
+

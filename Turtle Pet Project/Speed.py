@@ -1,5 +1,5 @@
 class Speed:
-    _default_speed = 0
+    _default_speed = 5
 
     def __init__(self):
         super().__init__()

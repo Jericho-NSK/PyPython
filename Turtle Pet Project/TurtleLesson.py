@@ -1,20 +1,16 @@
 from turtle import Turtle, Screen
 
-from Colors import Colors
+from Appearance import Colors
+from Control import Control
 from Mover import Mover
 from Speed import Speed
-from Control import Control
 
 
-class Pointer(Control, Mover, Speed, Colors, Turtle):
+class Painter(Control, Mover, Speed, Colors, Turtle):
     def __init__(self):
         super().__init__()
-        self.default_values()
-
-    def default_values(self):
-        super().default_values()
 
 
-trt = Pointer()
+trt = Painter()
 Screen().listen()
 Screen().mainloop()

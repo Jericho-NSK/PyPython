@@ -1,18 +1,22 @@
 class Speed:
-    _default_speed = 5
+    __speed = 5
 
     def __init__(self):
         super().__init__()
+        self.speed(self.__speed)
 
-    @property
-    def Speed(self):
-        return print(self._speed)
+    def speed_up(self):
+        if 1 <= self.__speed < 10:
+            self.__speed += 1
+            self.speed(self.__speed)
+        elif self.__speed == 10:
+            self.__speed = 0
+            self.speed(self.__speed)
 
-    @Speed.setter
-    def Speed(self, speed):
-        self.speed(speed)
-        self._speed = self.pen()['speed']
-
-    def default_values(self):
-        super().default_values()
-        self.speed(self._default_speed)
+    def speed_down(self):
+        if 1 < self.__speed <= 10:
+            self.__speed -= 1
+            self.speed(self.__speed)
+        elif self.__speed == 0:
+            self.__speed = 10
+            self.speed(self.__speed)

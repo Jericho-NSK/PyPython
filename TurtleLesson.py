@@ -3,7 +3,7 @@ from turtle import Turtle, colormode, bgcolor, exitonclick, Screen
 
 
 class Speed:
-    __default_speed = 1
+    _default_speed = 1
 
     def __init__(self):
         super().__init__()
@@ -19,22 +19,21 @@ class Speed:
 
     def default_values(self):
         super().default_values()
-        self.speed(self.__default_speed)
+        self.speed(self._default_speed)
 
 
 class Colors:
-    __size = 3
     __colormode = 255
-    __back_ground_color = 'white'
-    __color = 'red'
+    _size = 3
+    _back_ground_color = 'white'
 
 
     def __init__(self):
-        self.Color = self.__color
+        self.Color = self._color
 
     @property
     def Color(self):
-        return print(self.__color)
+        return print(self._color)
 
     @Color.setter
     def Color(self, color):
@@ -44,21 +43,21 @@ class Colors:
             self.random_color()
 
     def random_color(self):
+        colormode(self.__colormode)
         r = randint(0, self.__colormode)
         g = randint(0, self.__colormode)
         b = randint(0, self.__colormode)
         self.pencolor(r, g, b)
-        self.__color = self.pen()['pencolor']
-        self.fillcolor(self.__color)
+        self._color = self.pen()['pencolor']
+        self.fillcolor(self._color)
 
     def default_values(self):
         super().default_values()
-        self.pensize(self.__size)
-        self.Color = self.__color
-        self.fillcolor(self.__color)
-        bgcolor(self.__back_ground_color)
-        colormode(self.__colormode)
         self.random_color()
+        self.pensize(self._size)
+        self.Color = self._color
+        self.fillcolor(self._color)
+        bgcolor(self._back_ground_color)
         Screen().onkey(self.random_color, 'space')
 
 
@@ -102,4 +101,4 @@ class Pointer(Turtle, Speed, Colors, Mover):
 trt = Pointer()
 Screen().listen()
 Screen().mainloop()
-exitonclick()
+Screen().update()

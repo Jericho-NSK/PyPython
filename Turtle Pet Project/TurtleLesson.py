@@ -14,5 +14,4 @@ class Line(Control, Mover, Speed, Colors, Turtle):
 
 trt = Line()
 Screen().listen()
-Screen().update()
 Screen().mainloop()

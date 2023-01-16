@@ -6,11 +6,13 @@ from Mover import Mover
 from Speed import Speed
 
 
-class Painter(Control, Mover, Speed, Colors, Turtle):
+class Line(Control, Mover, Speed, Colors, Turtle):
+    """Painter for lines with random colors"""
     def __init__(self):
         super().__init__()
 
 
-trt = Painter()
+trt = Line()
 Screen().listen()
+Screen().update()
 Screen().mainloop()

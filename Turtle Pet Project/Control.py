@@ -2,7 +2,7 @@ from turtle import Screen
 
 
 class Control:
-
+    """Contains functions to control pointer, changing color, size, speed, visibility"""
     def __init__(self):
         super().__init__()
         Screen().onkeypress(self.random_color, 'space')

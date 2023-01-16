@@ -1,5 +1,6 @@
 class Speed:
-    __speed = 5
+    """Setter for default speed and change by buttons"""
+    __speed = 3
 
     def __init__(self):
         super().__init__()

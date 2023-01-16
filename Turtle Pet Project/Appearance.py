@@ -1,8 +1,9 @@
-from random import randint
-from turtle import colormode, bgcolor
+from random import random
+from turtle import bgcolor
 
 
 class Pointer:
+    """Pointer appearance. Can hide him and change scale by buttons"""
     _pointer_size = 1.5
     _pen_size = 3
 
@@ -10,6 +11,7 @@ class Pointer:
         super().__init__()
         self.shapesize(self._pointer_size)
         self.pensize(self._pen_size)
+        self.shape('turtle')
 
     def hidding(self):
         if self.isvisible():
@@ -32,7 +34,8 @@ class Pointer:
             self.pensize(self._pen_size)
 
 class Colors(Pointer):
-    __colormode = 255
+    """Setter for background color and pointer. Setter used just for example.
+    Can change color by buttons to random color"""
     _back_ground_color = 'white'
 
     def __init__(self):
@@ -52,10 +55,9 @@ class Colors(Pointer):
             self.random_color()
 
     def random_color(self):
-        colormode(self.__colormode)
-        r = randint(0, self.__colormode)
-        g = randint(0, self.__colormode)
-        b = randint(0, self.__colormode)
+        r = random()
+        g = random()
+        b = random()
         self.pencolor(r, g, b)
         self._color = self.pen()['pencolor']
         self.fillcolor(self._color)

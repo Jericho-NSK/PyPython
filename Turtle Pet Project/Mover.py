@@ -1,4 +1,5 @@
 class Mover:
+    """Contains functions for moving Pointer to default step"""
     _step = 100
 
     def __init__(self):

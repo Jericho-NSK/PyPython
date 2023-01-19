@@ -33,6 +33,7 @@ class Pointer:
             self._pen_size -= 1
             self.pensize(self._pen_size)
 
+
 class Colors(Pointer):
     """Setter for background color and pointer. Setter used just for example.
     Can change color by buttons to random color"""

@@ -26,23 +26,16 @@ class Window:
     def make_button(self, digit):
         return Buttons(text=digit, command=lambda: self.click(digit))
 
-    def make_operation(self, operation):
-        return Buttons(text=operation,
-                       command=lambda: self.click(operation) if self.entry.get()
-                       and self.entry.get() != '0'
-                       and not str(self.entry.get()).endswith(('+', '-', '*', '/'))
-                       else None)
+    def make_operators(self, operation):
+        return Buttons(text=operation, command=lambda: self.operation(operation))
 
     def buttons(self):
         for i in range(1, 10):
-            self.make_button(i).grid(row=int((i - 1) / 3) + 1, column=int((i - 1) % 3))
+            self.make_button(str(i)).grid(row=int((i - 1) / 3) + 1, column=int((i - 1) % 3))
         else:
-            self.make_button(0).grid(row=4, column=1)
+            self.make_button('0').grid(row=4, column=1)
         for i in enumerate('+-*/', 1):
-            self.make_operation(i[1]).grid(row=i[0], column=3)
-
-
-
+            self.make_operators(i[1]).grid(row=i[0], column=3)
 
         Buttons(text='=', command=self.result).grid(row=5, column=3)
         Buttons(text='del', command=self.delete).grid(row=5, column=0)

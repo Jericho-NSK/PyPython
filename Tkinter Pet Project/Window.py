@@ -2,7 +2,7 @@ from tkinter import PhotoImage, Button
 
 
 class Window:
-    """Decorating window"""
+    """Decorating window and buttons"""
     _title = 'CALCULATOR'
     _width = 500
     _height = 500
@@ -34,11 +34,12 @@ class Window:
             self.make_button(str(i)).grid(row=int((i - 1) / 3) + 1, column=int((i - 1) % 3))
         else:
             self.make_button('0').grid(row=4, column=1)
+
         for i in enumerate('+-*/', 1):
             self.make_operators(i[1]).grid(row=i[0], column=3)
 
         Buttons(text='=', command=self.result).grid(row=5, column=3)
-        Buttons(text='del', command=self.delete).grid(row=5, column=0)
+        Buttons(text='del', command=self.delete).grid(row=5, column=2)
         Buttons(text='C', command=self.clean).grid(row=5, column=1)
 
 

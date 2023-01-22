@@ -1,8 +1,10 @@
-from tkinter import PhotoImage, Button
+from tkinter import PhotoImage
+
+from Buttons import Buttons
 
 
 class Window:
-    """Decorating window and buttons"""
+    """Decorating window"""
     _title = 'CALCULATOR'
     _width = 500
     _height = 500
@@ -42,19 +44,3 @@ class Window:
         Buttons(text='del', command=self.delete).grid(row=5, column=2)
         Buttons(text='C', command=self.clean).grid(row=5, column=1)
         Buttons(text='.', command=self.decimal).grid(row=4, column=2)
-
-
-class Buttons(Button):
-    """Buttons"""
-    _bg = '#9D9DF2'
-    _font = 'Arial', 16, 'bold'
-    _pad = 3
-
-    def __init__(self, text: str = '',
-                 bg: str = _bg,
-                 activebackground=_bg,
-                 font: tuple = _font,
-                 bd=7,
-                 command=None):
-        super().__init__(text=text, bg=bg, activebackground=activebackground, font=font, bd=bd, command=command)
-        self.grid(stick='wens', padx=self._pad, pady=self._pad)

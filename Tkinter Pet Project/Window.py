@@ -41,6 +41,7 @@ class Window:
         Buttons(text='=', command=self.result).grid(row=5, column=3)
         Buttons(text='del', command=self.delete).grid(row=5, column=2)
         Buttons(text='C', command=self.clean).grid(row=5, column=1)
+        Buttons(text='.', command=self.decimal).grid(row=4, column=2)
 
 
 class Buttons(Button):

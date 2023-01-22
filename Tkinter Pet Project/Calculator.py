@@ -44,6 +44,8 @@ class Calculator(Window, Tk):
             self.clean()
         elif event.keysym in ['Return', 'equal']:
             self.result()
+        elif event.keysym in ['period', 'comma']:
+            self.decimal()
 
     @read_only
     def click(self, symbol):
@@ -58,12 +60,37 @@ class Calculator(Window, Tk):
         value = self.entry.get()
         if value[-1] in '+-*/':
             value = value[:-1]
-        elif '+' in value or '-' in value or '*' in value or '/' in value:
+        elif any((value.count('+'), value.count('-'), value.count('*'), value.count('/'), value[-1].count('.'))):
             self.result()
-            self.entry['state'] = "normal"
             value = self.entry.get()
+            if '!' in value:
+                return
+            self.entry['state'] = "normal"
         self.entry.delete(0, 'end')
         self.entry.insert(0, value + symbol)
+
+    @read_only
+    def decimal(self):
+        value = self.entry.get()
+        if value[-1] in '+-*/':
+            if any((value[1:-1].count('+'), value[1:-1].count('-'), value[1:-1].count('*'), value[1:-1].count('/'))):
+                self.result()
+                value = self.entry.get()
+                self.entry['state'] = "normal"
+            self.entry.delete(0, 'end')
+            self.entry.insert(0, value + '0.')
+        elif value.count('+') or value.count('-') or value.count('*') or value.count('/'):
+            for i in '+-*/':
+                if '.' in value[value.rfind(i):]:
+                    break
+            else:
+                self.entry.insert('end', '.')
+        elif '.' in value:
+            for i in '+-*/':
+                if i in value[value.rfind('.'):]:
+                    self.entry.insert('end', '.')
+        else:
+            self.entry.insert('end', '.')
 
     @read_only
     def delete(self):

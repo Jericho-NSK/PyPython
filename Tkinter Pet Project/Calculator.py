@@ -1,4 +1,4 @@
-from tkinter import Tk, Entry
+from tkinter import Tk, Entry, messagebox
 
 from Window import Window
 
@@ -52,9 +52,9 @@ class Calculator(Window, Tk):
         value = self.entry.get()
         match list(value):
             case ['0']:
-                self.delete()
+                self.entry.delete(len(value) - 1)
             case *_, '+' | '-' | '*' | '/', '0':
-                self.delete()
+                self.entry.delete(len(value) - 1)
         self.entry['state'] = "normal"
         self.entry.insert(len(value), symbol)
         self.entry.icursor(len(value))
@@ -103,6 +103,7 @@ class Calculator(Window, Tk):
             self.click('0')
         else:
             self.entry.delete(len(value) - 1)
+            value = self.entry.get()
             if not value:
                 self.click('0')
 
@@ -127,6 +128,15 @@ class Calculator(Window, Tk):
         except ZeroDivisionError:
             self.entry.insert(0, 'На ноль делить нельзя!')
 
+    @read_only
+    def exponentiation(self):
+        messagebox.showinfo(message='Button not realized')
 
-tk = Calculator()
-tk.mainloop()
+    @read_only
+    def plus_minus(self):
+        messagebox.showinfo(message='Button not realized')
+
+
+if __name__ == '__main__':
+    tk = Calculator()
+    tk.mainloop()

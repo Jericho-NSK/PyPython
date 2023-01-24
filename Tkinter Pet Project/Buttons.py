@@ -4,7 +4,7 @@ from tkinter import Button
 class Buttons(Button):
     """Buttons creator"""
     _bg = '#9D9DF2'
-    _font = 'Arial', 16, 'bold'
+    _font = 'Arial', 18, 'bold'
     _pad = 3
 
     def __init__(self, text: str = '',

@@ -9,7 +9,6 @@ class Window:
     _width = 500
     _height = 500
     _bg = '#9D9DF2'
-    _font = 'Arial', 15, 'bold'
     _default_text = ''
 
     def __init__(self):
@@ -20,6 +19,9 @@ class Window:
         self.iconphoto(True, PhotoImage(file='icon.png'))
         self.config(bg='#86d5d9')
         self.buttons()
+        self.make_grid()
+
+    def make_grid(self):
         for i in range(self.grid_size()[0]):
             self.grid_columnconfigure(i, minsize=int(self._width / self.grid_size()[0]))
         for i in range(self.grid_size()[1]):
@@ -44,3 +46,6 @@ class Window:
         Buttons(text='del', command=self.delete).grid(row=5, column=2)
         Buttons(text='C', command=self.clean).grid(row=5, column=1)
         Buttons(text='.', command=self.decimal).grid(row=4, column=2)
+
+        Buttons(text='x\uA677', command=self.exponentiation).grid(row=4, column=0)
+        Buttons(text='\u00B1', command=self.plus_minus).grid(row=5, column=0)

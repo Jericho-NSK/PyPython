@@ -50,8 +50,12 @@ class Calculator(Window, Tk):
     @read_only
     def click(self, symbol):
         value = self.entry.get()
-        if value == '0':
-            self.entry.delete(0)
+        match list(value):
+            case ['0']:
+                self.delete()
+            case *_, '+' | '-' | '*' | '/', '0':
+                self.delete()
+        self.entry['state'] = "normal"
         self.entry.insert(len(value), symbol)
         self.entry.icursor(len(value))
 
@@ -79,9 +83,9 @@ class Calculator(Window, Tk):
                 self.entry['state'] = "normal"
             self.entry.delete(0, 'end')
             self.entry.insert(0, value + '0.')
-        elif value.count('+') or value.count('-') or value.count('*') or value.count('/'):
+        elif value.count('+') or value[1:].count('-') or value.count('*') or value.count('/'):
             for i in '+-*/':
-                if '.' in value[value.rfind(i):]:
+                if '.' in value[1:][value[1:].rfind(i):]:
                     break
             else:
                 self.entry.insert('end', '.')

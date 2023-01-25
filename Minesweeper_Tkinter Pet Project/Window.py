@@ -1,6 +1,7 @@
 from tkinter import Tk, PhotoImage
 from PIL import ImageTk, Image
 from Buttons import Buttons
+from random import sample
 
 
 class Window(Tk):
@@ -22,16 +23,44 @@ class Window(Tk):
         self.resizable(False, False)
         self.iconphoto(False, PhotoImage(file='Icon.png', master=self))
         self.create_buttons()
+        self.count_mines()
 
     def create_buttons(self):
-        count = (i for i in range(1, self.total + 1))
+        for i in range(self.column + 2):
+            temp_list = list()
+            for j in range(self.row + 2):
+                temp_list.append(Buttons())
+
+            self.list_button.append(temp_list)
+
+        number = 1
+        mines_numbers = sample(range(1, self.total + 1), self.total // 9)
         for i in range(self.column):
             for j in range(self.row):
-                self.list_button.append(Buttons(i, j, count.__next__()))
-                self.list_button[-1].grid(stick='wens', row=i, column=j)
-                self.list_button[-1].boom = ImageTk.PhotoImage(self.boom, master=self.list_button[-1])
+                new_button = Buttons(i, j, number)
+                new_button.grid(stick='wens', row=i, column=j)
+                new_button.boom = ImageTk.PhotoImage(self.boom, master=new_button)
+                if new_button.number in mines_numbers:
+                    new_button.is_mine = True
+                self.list_button[i][j] = new_button
+                number += 1
 
         for i in range(self.grid_size()[0]):
             self.grid_columnconfigure(i, minsize=self.button_size)
         for i in range(self.grid_size()[1]):
             self.grid_rowconfigure(i, minsize=self.button_size)
+
+    def count_mines(self):
+
+        for i in range(self.row):
+            for j in range(self.column):
+                count_near_mines = 0
+                if not self.list_button[i][j].is_mine:
+                    for x in [-1, 0, 1]:
+                        for y in [-1, 0, 1]:
+                            if self.list_button[i+x][j+y].is_mine:
+                                count_near_mines += 1
+                self.list_button[i][j].count_near_mines = count_near_mines
+        # for i in self.list_button:
+        #     for j in i:
+        #         print(j.number, j.x, j.y)

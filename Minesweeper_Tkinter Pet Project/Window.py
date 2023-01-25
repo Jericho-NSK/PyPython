@@ -1,15 +1,18 @@
 from tkinter import Tk, PhotoImage
-
+from PIL import ImageTk, Image
 from Buttons import Buttons
 
 
 class Window(Tk):
     _title = 'Minesweeper'
-    _row = 3
-    _column = 3
-    _button_size = 50
-    _width = _column * _button_size
-    _height = _row * _button_size
+    row = 5
+    column = 5
+    total = row * column
+    button_size = 50
+    icon_size = int(button_size * 0.8)
+    boom = Image.open('Boom.png').resize((icon_size, icon_size))
+    _width = column * button_size
+    _height = row * button_size
     list_button = []
 
     def __init__(self):
@@ -21,12 +24,14 @@ class Window(Tk):
         self.create_buttons()
 
     def create_buttons(self):
-        for i in range(self._column):
-            for j in range(self._row):
-                self.list_button.append(Buttons(i, j))
-                self.list_button[-1].grid(stick='wens', column=i, row=j)
+        count = (i for i in range(1, self.total + 1))
+        for i in range(self.column):
+            for j in range(self.row):
+                self.list_button.append(Buttons(i, j, count.__next__()))
+                self.list_button[-1].grid(stick='wens', row=i, column=j)
+                self.list_button[-1].boom = ImageTk.PhotoImage(self.boom, master=self.list_button[-1])
 
         for i in range(self.grid_size()[0]):
-            self.grid_columnconfigure(i, minsize=self._button_size)
+            self.grid_columnconfigure(i, minsize=self.button_size)
         for i in range(self.grid_size()[1]):
-            self.grid_rowconfigure(i, minsize=self._button_size)
+            self.grid_rowconfigure(i, minsize=self.button_size)

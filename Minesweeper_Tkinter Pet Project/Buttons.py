@@ -15,6 +15,7 @@ class Buttons(Button):
         self.number = number
         self.count_near_mines = False
         self.is_open = False
+        self['image'] = ''
 
 
 

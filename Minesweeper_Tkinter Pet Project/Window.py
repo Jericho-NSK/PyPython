@@ -5,14 +5,15 @@ from random import sample
 
 
 class Window(Tk):
-    row = 7
-    column = 7
+    row = 5
+    column = 5
     _total = row * column
     _difficult = {'easy': 6, 'normal': 5, 'hard': 4}
     _button_size = 50
     _title = 'Minesweeper'
     _icon_size = int(_button_size * 0.8)
-    _boom = Image.open('Boom.png').resize((_icon_size, _icon_size))
+    _boom_icon = Image.open('Boom.png').resize((_icon_size, _icon_size))
+    _mine_icon = Image.open('Mine.png').resize((_icon_size, _icon_size))
     _width = column * _button_size
     _height = row * _button_size
     list_button = []
@@ -39,14 +40,16 @@ class Window(Tk):
     def create_buttons(self):
         """Создание кнопок с полями и распределение по ним мин в зависимости от выбранной сложности"""
         number = 1
-        mines_numbers = sample(range(1, self._total + 1), self._total // self._difficult['hard'])
+        mines_numbers = sample(range(1, self._total + 1), self._total // self._difficult['easy'])
         for i in range(self.column):
             for j in range(self.row):
                 new_button = Buttons(i, j, number)
                 new_button.grid(stick='wens', row=i, column=j)
+                new_button.mine = False
+                new_button.alarm = ImageTk.PhotoImage(self._mine_icon, master=new_button)
                 if new_button.number in mines_numbers:
                     new_button.is_mine = True
-                    new_button.boom = ImageTk.PhotoImage(self._boom, master=new_button)
+                    new_button.boom = ImageTk.PhotoImage(self._boom_icon, master=new_button)
                 self.list_button[i][j] = new_button
                 number += 1
 

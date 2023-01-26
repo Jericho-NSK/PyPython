@@ -1,14 +1,16 @@
 from tkinter import messagebox
 from Buttons import Buttons
 from Window import Window
+from PIL import ImageTk, Image
 
 
 class Game:
     window = Window()
     colors = {'1': 'blue', '2': 'green', '3': 'red', '4': 'orange', '5': 'magenta', '6': 'purple', '7': 'brown', '8': 'black'}
+    mine_icon = Image.open('Mine.png').resize((40, 40))
 
     def __init__(self):
-        self.window.bind('<FocusOut>', self.exit)
+        # self.window.bind('<FocusOut>', self.exit)
         self.bind_commands()
         self.window.mainloop()
 
@@ -17,9 +19,21 @@ class Game:
         for i in self.window.list_button:
             for j in i:
                 j['command'] = lambda temp=j: self.click(temp)
+                j.bind('<Button-3>', lambda temp=j: self.mine(temp))
+
+    @staticmethod
+    def mine(event):
+        if event.widget.is_open:
+            return
+        if event.widget['image']:
+            event.widget['image'] = ''
+        else:
+            event.widget['image'] = event.widget.alarm
 
     def click(self, button: Buttons):
         """Обработка нажатия на поле"""
+        if button['image']:
+            return
         if button.is_mine:
             button['image'] = button.boom
             button.is_open = True
@@ -46,7 +60,7 @@ class Game:
                 x, y = current_button.x, current_button.y
                 for dx in [-1, 0, 1]:
                     for dy in [-1, 0, 1]:
-                        if abs(dx-dy) == 1:
+                        if dx or dy:
                             next_button = self.window.list_button[x+dx][y+dy]
                             if not next_button.is_open and next_button.number is not None and current_button not in temp_list:
                                 temp_list.append(next_button)

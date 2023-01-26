@@ -9,10 +9,12 @@ class Buttons(Button):
         super().__init__(bd=self._bd,
                          font=self._font)
         self.boom = None
-        self.coordinates = (x + 1, y + 1)
+        self.x = x
+        self.y = y
         self.is_mine = False
         self.number = number
-        self.count_near_mines = 0
+        self.count_near_mines = False
+        self.is_open = False
 
 
 

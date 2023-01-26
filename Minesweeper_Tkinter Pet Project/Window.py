@@ -1,5 +1,4 @@
 from tkinter import Tk, PhotoImage
-from PIL import ImageTk, Image
 from Buttons import Buttons
 from random import sample
 
@@ -9,13 +8,9 @@ class Window(Tk):
     column = 5
     _total = row * column
     _difficult = {'easy': 6, 'normal': 5, 'hard': 4}
-    _button_size = 50
     _title = 'Minesweeper'
-    _icon_size = int(_button_size * 0.8)
-    _boom_icon = Image.open('Boom.png').resize((_icon_size, _icon_size))
-    _mine_icon = Image.open('Mine.png').resize((_icon_size, _icon_size))
-    _width = column * _button_size
-    _height = row * _button_size
+    _width = column * Buttons.button_size
+    _height = row * Buttons.button_size
     list_button = []
 
     def __init__(self):
@@ -46,19 +41,17 @@ class Window(Tk):
                 new_button = Buttons(i, j, number)
                 new_button.grid(stick='wens', row=i, column=j)
                 new_button.mine = False
-                new_button.alarm = ImageTk.PhotoImage(self._mine_icon, master=new_button)
                 if new_button.number in mines_numbers:
                     new_button.is_mine = True
-                    new_button.boom = ImageTk.PhotoImage(self._boom_icon, master=new_button)
                 self.list_button[i][j] = new_button
                 number += 1
 
     def alignment(self):
         """Выравнивание кнопок по ширине и высоте поля с учетом размера и количества полей"""
         for i in range(self.grid_size()[0]):
-            self.grid_columnconfigure(i, minsize=self._button_size)
+            self.grid_columnconfigure(i, minsize=Buttons.button_size)
         for i in range(self.grid_size()[1]):
-            self.grid_rowconfigure(i, minsize=self._button_size)
+            self.grid_rowconfigure(i, minsize=Buttons.button_size)
 
     def count_mines(self):
         """Подсчет мин у соседей, присвоение этого числа в атрибуты кнопки"""

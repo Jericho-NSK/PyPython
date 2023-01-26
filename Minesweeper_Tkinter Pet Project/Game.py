@@ -1,16 +1,15 @@
 from tkinter import messagebox
+
 from Buttons import Buttons
 from Window import Window
-from PIL import ImageTk, Image
 
 
 class Game:
     window = Window()
     colors = {'1': 'blue', '2': 'green', '3': 'red', '4': 'orange', '5': 'magenta', '6': 'purple', '7': 'brown', '8': 'black'}
-    mine_icon = Image.open('Mine.png').resize((40, 40))
 
     def __init__(self):
-        # self.window.bind('<FocusOut>', self.exit)
+        self.window.bind('<FocusOut>', self.exit)
         self.bind_commands()
         self.window.mainloop()
 
@@ -18,26 +17,37 @@ class Game:
         """Присвоение кнопкам команды при нажатии"""
         for i in self.window.list_button:
             for j in i:
-                j['command'] = lambda temp=j: self.click(temp)
+                j.bind('<Button-1>', lambda temp=j: self.click(temp))
                 j.bind('<Button-3>', lambda temp=j: self.mine(temp))
 
     @staticmethod
     def mine(event):
-        if event.widget.is_open:
+        """Обработка нажатия правой кнопкой на поле"""
+        button: Buttons = event.widget
+        if button.is_open:
             return
-        if event.widget['image']:
-            event.widget['image'] = ''
+        if button['image']:
+            button['image'] = ''
         else:
-            event.widget['image'] = event.widget.alarm
+            button['image'] = button.alarm
 
-    def click(self, button: Buttons):
-        """Обработка нажатия на поле"""
+    def click(self, event):
+        """Обработка нажатия левой кнопкой на поле"""
+        button: Buttons = event.widget
         if button['image']:
             return
         if button.is_mine:
-            button['image'] = button.boom
+            button['image'] = button.first_boom
             button.is_open = True
-            # messagebox.showinfo(message='BOOM!!!')
+            # messagebox.showinfo('Game over', message='BOOM!!!')
+            for i in range(self.window.column):
+                for j in range(self.window.row):
+                    btn: Buttons = self.window.list_button[i][j]
+                    if btn.is_mine and not btn['image']:
+                        btn.configure(image=btn.boom)
+                    while btn._tclCommands:
+                        btn.deletecommand(btn._tclCommands[0])
+
         elif button.count_near_mines:
             button.configure(text=button.count_near_mines, relief='sunken', state='disabled')
             button['disabledforeground'] = self.colors[str(button.count_near_mines)]
@@ -60,10 +70,10 @@ class Game:
                 x, y = current_button.x, current_button.y
                 for dx in [-1, 0, 1]:
                     for dy in [-1, 0, 1]:
-                        if dx or dy:
-                            next_button = self.window.list_button[x+dx][y+dy]
-                            if not next_button.is_open and next_button.number is not None and current_button not in temp_list:
-                                temp_list.append(next_button)
+                        # if dx or dy:
+                        next_button = self.window.list_button[x + dx][y + dy]
+                        if not next_button.is_open and next_button.number is not None and current_button not in temp_list:
+                            temp_list.append(next_button)
 
     def exit(self, event):
         """Закрытие без фокуса"""

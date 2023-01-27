@@ -23,9 +23,9 @@ class Buttons(Button):
         self.is_bomb = False
         self.count_near_bombs = False
         self.is_open = False
-        self.icons()
+        self.create_icons()
 
-    def icons(self):
+    def create_icons(self):
         self.first_boom = ImageTk.PhotoImage(self._first_boom_icon)
         self.boom = ImageTk.PhotoImage(self._boom_icon)
         self.alarm = ImageTk.PhotoImage(self._alarm_icon)

@@ -5,8 +5,8 @@ from Buttons import Buttons
 
 
 class Window(Tk):
-    row = 5
-    column = 5
+    row = 15
+    column = 15
     _total = row * column
     _difficult = {'easy': 7, 'normal': 5, 'hard': 3}
     _title = 'Minesweeper'
@@ -37,11 +37,11 @@ class Window(Tk):
     def create_buttons(self):
         """Создание кнопок с полями"""
         temp_number = 1
-        for i in range(self.column):
-            for j in range(self.row):
-                new_button = Buttons(i, j, temp_number)
-                new_button.grid(stick='wens', row=i, column=j)
-                self.list_button[i][j] = new_button
+        for row in range(self.column):
+            for column in range(self.row):
+                new_button = Buttons(row, column, temp_number)
+                new_button.grid(stick='wens', row=row, column=column)
+                self.list_button[row][column] = new_button
                 temp_number += 1
 
     def create_bombs(self, button: Buttons = False):
@@ -49,7 +49,6 @@ class Window(Tk):
         temp_list = list(range(1, self._total + 1))
         shuffle(temp_list)
         bombs_numbers = temp_list[:self._total // self._difficult['hard']]
-        print(len(bombs_numbers))
         if button and button.number in bombs_numbers:
             return button
         for row in self.list_button:
@@ -61,20 +60,21 @@ class Window(Tk):
 
     def alignment(self):
         """Выравнивание кнопок по ширине и высоте поля с учетом размера и количества полей"""
-        for i in range(self.grid_size()[0]):
-            self.grid_columnconfigure(i, minsize=Buttons.button_size)
-        for i in range(self.grid_size()[1]):
-            self.grid_rowconfigure(i, minsize=Buttons.button_size)
+
+        for row in range(self.grid_size()[1]):
+            self.grid_rowconfigure(row, minsize=Buttons.button_size)
+        for column in range(self.grid_size()[0]):
+            self.grid_columnconfigure(column, minsize=Buttons.button_size)
 
     def count_bombs(self):
         """Подсчет мин у соседей, присвоение этого числа в атрибуты кнопки"""
-        for i in range(self.row):
-            for j in range(self.column):
+        for row in self.list_button:
+            for btn in row:
                 count_near_bombs = 0
-                if not self.list_button[i][j].is_bomb:
-                    for x in [-1, 0, 1]:
-                        for y in [-1, 0, 1]:
-                            if self.list_button[i + x][j + y].is_bomb:
+                if not btn.is_bomb:
+                    for dx in [-1, 0, 1]:
+                        for dy in [-1, 0, 1]:
+                            if self.list_button[btn.x + dx][btn.y + dy].is_bomb:
                                 count_near_bombs += 1
-                self.list_button[i][j].count_near_bombs = count_near_bombs
-                self.list_button[i][j]['text'] = self.list_button[i][j].count_near_bombs
+                btn.count_near_bombs = count_near_bombs
+                # btn['text'] = btn.count_near_bombs

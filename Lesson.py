@@ -1,10 +1,8 @@
-class A:
-    """rfg"""
-    def __repr__(self):
-        return 'dfgsg'
-    def __str__(self):
-        return 'dfgsgdfghjnmk'
+a = [2, 5]
+def f(a):
 
+    a+=4,
+    print(a)
 
-a = A()
-print(a)
+f(a)
+f(a)

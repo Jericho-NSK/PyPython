@@ -1,33 +1,36 @@
 from random import shuffle
 from tkinter import Tk, PhotoImage
-
+from Menubar import Menubar
 from Buttons import Buttons
 
 
 class Window(Tk):
-    row = 15
-    column = 15
+    row = 5
+    column = 5
     _total = row * column
-    _difficult = {'easy': 7, 'normal': 5, 'hard': 3}
+    _difficult = {'easy': 7, 'normal': 6, 'hard': 5}
     _title = 'Minesweeper'
     _width = column * Buttons.button_size
     _height = row * Buttons.button_size
     list_button = []
 
-    def __init__(self):
+    def __init__(self, game):
         super().__init__()
         self.title(self._title)
-        self.geometry(f'{self._width}x{self._height}+1200+200')
-        self.resizable(False, False)
+        self.geometry(f'{self._width}x{self._height+25}+1000+100')
+        self.resizable(True, True)
         self.iconphoto(False, PhotoImage(file='Boom.png', master=self))
         self.create_default_buttons()
         self.create_buttons()
         self.create_bombs()
         self.alignment()
         self.count_bombs()
+        menubar = Menubar(self, game)
+        self.config(menu=menubar)
 
     def create_default_buttons(self):
         """Создание полей. По краям нужны дополнительные ряды и колонки, поэтому сначала создается увеличенное число полей, без кнопок"""
+        self.list_button = []
         for i in range(self.column + 2):
             temp_list = list()
             for j in range(self.row + 2):
@@ -48,7 +51,7 @@ class Window(Tk):
         """Распределение по кнопкам бомб в зависимости от выбранной сложности"""
         temp_list = list(range(1, self._total + 1))
         shuffle(temp_list)
-        bombs_numbers = temp_list[:self._total // self._difficult['hard']]
+        bombs_numbers = temp_list[:self._total // self._difficult['normal']]
         if button and button.number in bombs_numbers:
             return button
         for row in self.list_button:
@@ -60,7 +63,6 @@ class Window(Tk):
 
     def alignment(self):
         """Выравнивание кнопок по ширине и высоте поля с учетом размера и количества полей"""
-
         for row in range(self.grid_size()[1]):
             self.grid_rowconfigure(row, minsize=Buttons.button_size)
         for column in range(self.grid_size()[0]):

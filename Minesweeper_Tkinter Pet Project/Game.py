@@ -5,12 +5,13 @@ from Window import Window
 
 
 class Game:
-    window = Window()
+
     colors = {'1': 'blue', '2': 'green', '3': 'red', '4': 'orange', '5': 'magenta', '6': 'purple', '7': 'brown', '8': 'black'}
 
     def __init__(self):
         self._game_starts = False
-        self.window.bind('<FocusOut>', self.exit)
+        # self.window.bind('<FocusOut>', self.exit)
+        self.window = Window(self)
         self.list_alarms = []
         self.bind_commands()
         self.window.mainloop()

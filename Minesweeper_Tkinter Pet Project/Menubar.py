@@ -28,3 +28,4 @@ class Menubar(Menu):
         window.alignment()
         window.count_bombs()
         game.bind_commands()
+        game._game_starts = False

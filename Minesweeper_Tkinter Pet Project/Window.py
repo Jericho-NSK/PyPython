@@ -17,8 +17,8 @@ class Window(Tk):
     def __init__(self, game):
         super().__init__()
         self.title(self._title)
-        self.geometry(f'{self._width}x{self._height+25}+1000+100')
-        self.resizable(True, True)
+        self.geometry(f'{self._width}x{self._height+75}+1000+100')
+        self.resizable(False, False)
         self.iconphoto(False, PhotoImage(file='Boom.png', master=self))
         self.create_default_buttons()
         self.create_buttons()
@@ -63,7 +63,7 @@ class Window(Tk):
 
     def alignment(self):
         """Выравнивание кнопок по ширине и высоте поля с учетом размера и количества полей"""
-        for row in range(self.grid_size()[1]):
+        for row in range(self.grid_size()[1]-1):
             self.grid_rowconfigure(row, minsize=Buttons.button_size)
         for column in range(self.grid_size()[0]):
             self.grid_columnconfigure(column, minsize=Buttons.button_size)

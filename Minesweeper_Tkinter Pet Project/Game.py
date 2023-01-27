@@ -9,9 +9,9 @@ class Game:
     colors = {'1': 'blue', '2': 'green', '3': 'red', '4': 'orange', '5': 'magenta', '6': 'purple', '7': 'brown', '8': 'black'}
 
     def __init__(self):
+        self.window = Window(self)
         self._game_starts = False
         # self.window.bind('<FocusOut>', self.exit)
-        self.window = Window(self)
         self.list_alarms = []
         self.bind_commands()
         self.window.mainloop()
@@ -38,7 +38,7 @@ class Game:
     def click_validation(self, event):
         """Валидация нажатия перед обработкой"""
         button: Buttons = event.widget
-        if button['image']:
+        if button['image'] or button.is_open:
             return
         if not self._game_starts and button.is_bomb:
             self.first_is_bomb(button)

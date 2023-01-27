@@ -8,7 +8,7 @@ class Buttons(Button):
     _bd = 3
     _boom_icon = Image.open('Boom.png').resize((int(button_size * 0.8), int(button_size * 0.8)))
     _first_boom_icon = Image.open('FirstBoom.png').resize((int(button_size * 0.8), int(button_size * 0.8)))
-    _alarm_icon = Image.open('Mine.png').resize((int(button_size * 0.8), int(button_size * 0.8)))
+    _alarm_icon = Image.open('Alarm.png').resize((int(button_size * 0.8), int(button_size * 0.8)))
 
     def __init__(self, x=0, y=0, number=None):
         super().__init__(bd=self._bd,
@@ -20,8 +20,8 @@ class Buttons(Button):
         self.x = x
         self.y = y
         self.number = number
-        self.is_mine = False
-        self.count_near_mines = False
+        self.is_bomb = False
+        self.count_near_bombs = False
         self.is_open = False
         self.icons()
 

@@ -10,7 +10,7 @@ class Game:
 
     def __init__(self):
         self._game_starts = False
-        # self.window.bind('<FocusOut>', self.exit)
+        self.window.bind('<FocusOut>', self.exit)
         self.list_alarms = []
         self.bind_commands()
         self.window.mainloop()
@@ -20,9 +20,9 @@ class Game:
         for i in self.window.list_button:
             for j in i:
                 j.bind('<Button-1>', lambda temp=j: self.click(temp))
-                j.bind('<Button-3>', lambda temp=j: self.mine(temp))
+                j.bind('<Button-3>', lambda temp=j: self.alarm(temp))
 
-    def mine(self, event):
+    def alarm(self, event):
         """Обработка нажатия правой кнопкой на поле"""
         button: Buttons = event.widget
         if button.is_open:
@@ -39,31 +39,30 @@ class Game:
         button: Buttons = event.widget
         if button['image']:
             return
-        if button.is_mine and not self._game_starts:
-            extra_mine = True
-            while button.is_mine:
-                button = self.window.create_buttons(button.number, extra_mine)
-            self.window.count_mines()
+        if button.is_bomb and not self._game_starts:
+            while button.is_bomb:
+                self.window.create_bombs(button)
+            self.window.count_bombs()
 
             for i in self.window.list_button:
                 for j in i:
                     if j.number in self.list_alarms:
                         j['image'] = button.alarm
         self._game_starts = True
-        if button.is_mine:
+        if button.is_bomb:
             button['image'] = button.first_boom
             button.is_open = True
             # messagebox.showinfo('Game over', message='BOOM!!!')
             for i in range(self.window.column):
                 for j in range(self.window.row):
                     btn: Buttons = self.window.list_button[i][j]
-                    if btn.is_mine and btn.number != button.number:
+                    if btn.is_bomb and btn.number != button.number:
                         btn.configure(image=btn.boom)
                     while btn._tclCommands:
                         btn.deletecommand(btn._tclCommands[0])
-        elif button.count_near_mines:
-            button.configure(text=button.count_near_mines, relief='sunken', state='disabled')
-            button['disabledforeground'] = self.colors[str(button.count_near_mines)]
+        elif button.count_near_bombs:
+            button.configure(text=button.count_near_bombs, relief='sunken', state='disabled')
+            button['disabledforeground'] = self.colors[str(button.count_near_bombs)]
             button.is_open = True
         else:
             button.configure(text='', relief='sunken', state='disabled')
@@ -76,9 +75,9 @@ class Game:
             current_button = temp_list.pop()
             current_button.configure(image='', relief='sunken', state='disabled')
             current_button.is_open = True
-            if current_button.count_near_mines:
-                current_button['text'] = current_button.count_near_mines
-                current_button['disabledforeground'] = self.colors[str(current_button.count_near_mines)]
+            if current_button.count_near_bombs:
+                current_button['text'] = current_button.count_near_bombs
+                current_button['disabledforeground'] = self.colors[str(current_button.count_near_bombs)]
             else:
                 x, y = current_button.x, current_button.y
                 for dx in [-1, 0, 1]:

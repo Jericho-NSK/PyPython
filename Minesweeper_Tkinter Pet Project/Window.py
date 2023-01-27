@@ -4,10 +4,10 @@ from random import sample
 
 
 class Window(Tk):
-    row = 5
-    column = 5
+    row = 2
+    column = 2
     _total = row * column
-    _difficult = {'easy': 6, 'normal': 5, 'hard': 4}
+    _difficult = {'easy': 7, 'normal': 5, 'hard': 2}
     _title = 'Minesweeper'
     _width = column * Buttons.button_size
     _height = row * Buttons.button_size
@@ -32,19 +32,21 @@ class Window(Tk):
                 temp_list.append(Buttons())
             self.list_button.append(temp_list)
 
-    def create_buttons(self):
+    def create_buttons(self, number=None, extra_mine=False):
         """Создание кнопок с полями и распределение по ним мин в зависимости от выбранной сложности"""
-        number = 1
-        mines_numbers = sample(range(1, self._total + 1), self._total // self._difficult['easy'])
+        temp_number = 1
+        mines_numbers = sample(range(1, self._total + 1 + extra_mine), self._total // self._difficult['hard'])
+        print(mines_numbers)
         for i in range(self.column):
             for j in range(self.row):
-                new_button = Buttons(i, j, number)
+                new_button = Buttons(i, j, temp_number)
                 new_button.grid(stick='wens', row=i, column=j)
-                new_button.mine = False
                 if new_button.number in mines_numbers:
                     new_button.is_mine = True
                 self.list_button[i][j] = new_button
-                number += 1
+                temp_number += 1
+                if new_button.number == number:
+                    return new_button
 
     def alignment(self):
         """Выравнивание кнопок по ширине и высоте поля с учетом размера и количества полей"""
@@ -64,3 +66,4 @@ class Window(Tk):
                             if self.list_button[i+x][j+y].is_mine:
                                 count_near_mines += 1
                 self.list_button[i][j].count_near_mines = count_near_mines
+                self.list_button[i][j]['text']=self.list_button[i][j].count_near_mines

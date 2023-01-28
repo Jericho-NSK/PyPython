@@ -3,12 +3,13 @@ from PIL import Image, ImageTk
 
 
 class Buttons(Button):
-    button_size = 50
-    _font = 'Arial', 14, 'bold'
+    button_size = 40
+    _font = 'Arial', 11, 'bold'
     _bd = 3
-    _boom_icon = Image.open('Boom.png').resize((int(button_size * 0.8), int(button_size * 0.8)))
-    _first_boom_icon = Image.open('FirstBoom.png').resize((int(button_size * 0.8), int(button_size * 0.8)))
-    _alarm_icon = Image.open('Alarm.png').resize((int(button_size * 0.8), int(button_size * 0.8)))
+    _icon_size = int(button_size * 0.82)
+    _boom_icon = Image.open('Boom.png').resize((_icon_size, _icon_size))
+    _first_boom_icon = Image.open('FirstBoom.png').resize((_icon_size, _icon_size))
+    _alarm_icon = Image.open('Alarm.png').resize((_icon_size, _icon_size))
 
     def __init__(self, x=0, y=0, number=None):
         super().__init__(bd=self._bd,

@@ -11,7 +11,7 @@ class Game:
     def __init__(self):
         self.window = Window(self)
         self._game_starts = False
-        # self.window.bind('<FocusOut>', self.exit)
+        self.window.bind('<FocusOut>', self.exit)
         self.list_alarms = []
         self.bind_commands()
         self.window.mainloop()
@@ -36,7 +36,7 @@ class Game:
             self.list_alarms.append(button.number)
 
     def click_validation(self, event):
-        """Валидация нажатия перед обработкой"""
+        """Валидация нажатия левой кнопки перед обработкой"""
         button: Buttons = event.widget
         if button['image'] or button.is_open:
             return

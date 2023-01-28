@@ -1,20 +1,31 @@
-import tkinter as tk
+from tkinter import Tk, Menu, IntVar
 
-class Example(tk.Frame):
-    def __init__(self, *args, **kwargs):
-        tk.Frame.__init__(self, *args, **kwargs)
-        self.l1 = tk.Radiobutton(self, text="Hover over me")
-        self.l1.pack(side="top")
-        self.l1.bind("<Enter>", self.on_enter)
-        self.l1.bind("<Leave>", self.on_leave)
+root = Tk()
+menubar = Menu(root)
+size = Menu(tearoff=0)
+size_var = IntVar(value=10)
+size.add_radiobutton(label='5x5', variable=size_var, command=lambda: None)
+size.add_radiobutton(label='10x10', variable=size_var, value=10, command=lambda: None)
+size.add_radiobutton(label='15x15', variable=size_var, command=lambda: None)
 
-    def on_enter(self, event):
-        self.l1.configure(background='red')
+menubar.add_cascade(label='Size', menu=size)
+root.config(menu=menubar)
+root.mainloop()
 
-    def on_leave(self, enter):
-        self.l1.configure(background="white")
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    Example(root).pack(side="top", fill="both", expand="true")
-    root.mainloop()
+
+# import tkinter as tk
+#
+# root = tk.Tk()
+#
+# radio_var = tk.IntVar(value=10)  # Option 10 is the default.
+#
+# menubar = tk.Menu(root)
+# size = tk.Menu(menubar, tearoff=0)
+# size.add_radiobutton(label='5x5', variable=radio_var, value=5)
+# size.add_radiobutton(label='10x10', variable=radio_var, value=10)
+# size.add_radiobutton(label='15x15', variable=radio_var, value=15)
+# menubar.add_cascade(label='Size', menu=size)
+# root.config(menu=menubar)
+#
+# root.mainloop()

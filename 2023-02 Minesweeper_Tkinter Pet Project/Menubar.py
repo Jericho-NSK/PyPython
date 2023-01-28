@@ -1,4 +1,4 @@
-from tkinter import Menu
+from tkinter import Menu, StringVar, IntVar
 
 
 class Menubar(Menu):
@@ -10,20 +10,21 @@ class Menubar(Menu):
 
     def create_menu(self, window, game):
         """Создание меню"""
-        self.add_command(label='New', command=lambda: self.new_game(window, game))
-
         size = Menu(self, tearoff=0)
-        size.add_radiobutton(label='5x5', command=lambda: self.new_size(window, 5))
-        size.add_radiobutton(label='10x10', command=lambda: self.new_size(window, 10))
-        size.add_radiobutton(label='15x15', command=lambda: self.new_size(window, 15))
-        self.add_cascade(label='Size', menu=size)
+        self.size_var = IntVar(value=window.side)
+        size.add_radiobutton(label='5x5', variable=self.size_var, value=5, command=lambda: self.new_size(window, 5))
+        size.add_radiobutton(label='10x10', variable=self.size_var, value=10, command=lambda: self.new_size(window, 10))
+        size.add_radiobutton(label='15x15', variable=self.size_var, value=15, command=lambda: self.new_size(window, 15))
 
         mode = Menu(self, tearoff=0)
-        mode.add_command(label='Easy', command=lambda: self.new_mode(window, 'easy'))
-        mode.add_command(label='Normal', command=lambda: self.new_mode(window, 'normal'))
-        mode.add_command(label='Hard', command=lambda: self.new_mode(window, 'hard'))
-        self.add_cascade(label='Mode', menu=mode)
+        self.mode_var = StringVar(value=window.mode)
+        mode.add_radiobutton(label='Easy', variable=self.mode_var, value='easy', command=lambda: self.new_mode(window, 'easy'))
+        mode.add_radiobutton(label='Normal', variable=self.mode_var, value='normal', command=lambda: self.new_mode(window, 'normal'))
+        mode.add_radiobutton(label='Hard', variable=self.mode_var, value='hard', command=lambda: self.new_mode(window, 'hard'))
 
+        self.add_command(label='New', command=lambda: self.new_game(window, game))
+        self.add_cascade(label='Size', menu=size)
+        self.add_cascade(label='Mode', menu=mode)
         self.add_command(label='Exit', command=self.quit)
 
     @staticmethod

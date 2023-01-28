@@ -64,7 +64,7 @@ class Game:
     def first_is_bomb(self, button: Buttons):
         """Выполнятся если первый клик попал по бомбе"""
         while button.is_bomb:
-            self.window.create_bombs(button)
+            self.window.create_bombs(mode=self.window.mode, button=button)
         self.window.count_bombs()
         for row in self.window.list_button:
             for btn in row:

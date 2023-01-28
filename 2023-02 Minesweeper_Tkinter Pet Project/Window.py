@@ -6,15 +6,18 @@ from Menubar import Menubar
 
 
 class Window(Tk):
-    _difficult = {'easy': 7, 'normal': 6, 'hard': 5}
     _title = 'Minesweeper'
     list_button = []
+    mods = {'easy': {5: 4, 10: 12, 15: 20},
+            'normal': {5: 7, 10: 16, 15: 40},
+            'hard': {5: 12, 10: 28, 15: 60}}
 
     def __init__(self, game):
         super().__init__()
         Menubar(self, game)
         self.side = 10
         self.side_size = self.side * Buttons.button_size
+        self.mode = 'normal'
         self.title(self._title)
         self.new_window()
         self.resizable(False, False)
@@ -26,7 +29,7 @@ class Window(Tk):
         self.geometry(f'{self.side_size}x{self.side_size}+1000+100')
         self.create_default_buttons()
         self.create_buttons()
-        self.create_bombs()
+        self.create_bombs(mode=self.mode)
         self.alignment()
         self.count_bombs()
 
@@ -49,11 +52,11 @@ class Window(Tk):
                 self.list_button[row][column] = new_button
                 temp_number += 1
 
-    def create_bombs(self, button: Buttons = False):
+    def create_bombs(self, mode, button: Buttons = False):
         """Распределение по кнопкам бомб в зависимости от выбранной сложности"""
         temp_list = list(range(1, self.side ** 2 + 1))
         shuffle(temp_list)
-        bombs_numbers = temp_list[:self.side ** 2 // self._difficult['normal']]
+        bombs_numbers = temp_list[:self.mods[mode][self.side]]
         print('Всего бомб', len(bombs_numbers))
         if button and button.number in bombs_numbers:
             return button

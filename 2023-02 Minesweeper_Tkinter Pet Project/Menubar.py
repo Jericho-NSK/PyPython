@@ -10,13 +10,15 @@ class Menubar(Menu):
 
     def create_menu(self, window, game):
         """Создание меню"""
-        self.add_command(label='New', command=lambda: self.new(window, game))
+        self.add_command(label='New', command=lambda: self.new_game(window, game))
 
-        size = Menu(self, tearoff=0)
-        size.add_radiobutton(label='5x5', command=lambda: self.size(window, 5))
-        size.add_radiobutton(label='10x10', command=lambda: self.size(window, 10))
-        size.add_radiobutton(label='15x15', command=lambda: self.size(window, 15))
-        self.add_cascade(label='Size', menu=size)
+        self.size = IntVar()
+        self.size.set(10)
+        self.size2 = Menu(self, tearoff=0)
+        self.size2.add_radiobutton(value=5 if self.size == 5 else None, label='5x5', command=lambda: self.new_size(window, 5))
+        self.size2.add_radiobutton(variable=True if self.size == 10 else None, label='10x10', command=lambda: self.new_size(window, 10))
+        self.size2.add_radiobutton(value=15 if self.size == 15 else None, label='15x15', command=lambda: self.new_size(window, 15))
+        self.add_cascade(label='Size', menu=self.size2)
 
         mode = Menu(self, tearoff=0)
         mode.add_command(label='Easy')
@@ -27,19 +29,16 @@ class Menubar(Menu):
         self.add_command(label='Exit', command=self.quit)
 
     @staticmethod
-    def new(window, game):
+    def new_game(window, game):
         """Операции при начале новой игры"""
         [child.destroy() for child in window.winfo_children() if '!buttons' in child._name]
-        window.geometry(f'{window.width}x{window.height}+1000+100')
-        window.create_default_buttons()
-        window.create_buttons()
-        window.create_bombs()
-        window.alignment()
-        window.count_bombs()
+        window.new_window()
         game.bind_commands()
         game._game_starts = False
+        game.list_alarms.clear()
 
     @staticmethod
-    def size(window, size):
-        window.new_size(size)
+    def new_size(window, size):
+        """Задание новых размеров при изменении через меню"""
+        window.side = size
 

@@ -13,38 +13,37 @@ class Window(Tk):
     def __init__(self, game):
         super().__init__()
         Menubar(self, game)
+        self.side = 10
+        self.side_size = self.side * Buttons.button_size
         self.title(self._title)
-        self.iconphoto(False, PhotoImage(file='Boom.png', master=self))
-        self.new_size()
-        self.geometry(f'{self.width}x{self.height}+1000+100')
+        self.new_window()
         self.resizable(False, False)
+        self.iconphoto(False, PhotoImage(file='FirstBoom.png', master=self))
+
+    def new_window(self):
+        """Создание окна"""
+        self.side_size = self.side * Buttons.button_size
+        self.geometry(f'{self.side_size}x{self.side_size}+1000+100')
         self.create_default_buttons()
         self.create_buttons()
         self.create_bombs()
         self.alignment()
         self.count_bombs()
 
-    def new_size(self, size=5):
-        self.row = size
-        self.column = size
-        self.width = self.column * Buttons.button_size
-        self.height = self.row * Buttons.button_size
-        self._total = self.row * self.column
-
     def create_default_buttons(self):
         """Создание полей. По краям нужны дополнительные ряды и колонки, поэтому сначала создается увеличенное число полей, без кнопок"""
         self.list_button = []
-        for i in range(self.column + 2):
+        for i in range(self.side + 2):
             temp_list = list()
-            for j in range(self.row + 2):
+            for j in range(self.side + 2):
                 temp_list.append(Buttons())
             self.list_button.append(temp_list)
 
     def create_buttons(self):
         """Создание кнопок с полями"""
         temp_number = 1
-        for row in range(self.column):
-            for column in range(self.row):
+        for row in range(self.side):
+            for column in range(self.side):
                 new_button = Buttons(row, column, temp_number)
                 new_button.grid(stick='wens', row=row, column=column)
                 self.list_button[row][column] = new_button
@@ -52,9 +51,9 @@ class Window(Tk):
 
     def create_bombs(self, button: Buttons = False):
         """Распределение по кнопкам бомб в зависимости от выбранной сложности"""
-        temp_list = list(range(1, self._total + 1))
+        temp_list = list(range(1, self.side ** 2 + 1))
         shuffle(temp_list)
-        bombs_numbers = temp_list[:self._total // self._difficult['normal']]
+        bombs_numbers = temp_list[:self.side ** 2 // self._difficult['normal']]
         print('Всего бомб', len(bombs_numbers))
         if button and button.number in bombs_numbers:
             return button

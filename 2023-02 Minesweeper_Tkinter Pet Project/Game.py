@@ -1,5 +1,3 @@
-from tkinter import messagebox
-
 from Buttons import Buttons
 from Window import Window
 
@@ -11,7 +9,6 @@ class Game:
     def __init__(self):
         self.window = Window(self)
         self._game_starts = False
-        self.window.bind('<FocusOut>', self.exit)
         self.list_alarms = []
         self.bind_commands()
         self.window.mainloop()
@@ -50,7 +47,6 @@ class Game:
         if button.is_bomb:
             button['image'] = button.first_boom
             button.is_open = True
-            # messagebox.showinfo('Game over', message='BOOM!!!')
             for row in self.window.list_button:
                 for btn in row:
                     if btn.is_bomb and btn.number != button.number:
@@ -92,10 +88,6 @@ class Game:
                         next_button = self.window.list_button[x + dx][y + dy]
                         if not next_button.is_open and next_button.number is not None and current_button not in temp_list:
                             temp_list.append(next_button)
-
-    def exit(self, event):
-        """Закрытие без фокуса"""
-        self.window.quit()
 
 
 if __name__ == '__main__':

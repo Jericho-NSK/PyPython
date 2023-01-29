@@ -38,6 +38,7 @@ class Menubar(Menu):
         game.bind_commands()
         game._game_starts = False
         game.list_alarms.clear()
+        game.list_opened.clear()
 
     @staticmethod
     def new_size(window, size):

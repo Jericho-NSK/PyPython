@@ -1,4 +1,5 @@
 from Buttons import Buttons
+from Final import Final
 from Window import Window
 
 
@@ -7,6 +8,9 @@ class Game:
     colors = {'1': 'blue', '2': 'green', '3': 'red', '4': 'orange', '5': 'magenta', '6': 'purple', '7': 'brown', '8': 'black'}
 
     def __init__(self):
+        self.list_bombs_numbers = []
+        self.list_opened = []
+        self.list_alarms = []
         self.window = Window(self)
         self._game_starts = False
         self.list_alarms = []
@@ -51,21 +55,24 @@ class Game:
                 for btn in row:
                     if btn.is_bomb and btn.number != button.number:
                         btn.configure(image=btn.boom)
-                    while btn._tclCommands:
-                        btn.deletecommand(btn._tclCommands[0])
-            self.window.end_game(game=self, win=False)
+            self.win_or_not(button, False)
+
         elif button.count_near_bombs:
             button.configure(text=button.count_near_bombs, relief='sunken', state='disabled')
             button['disabledforeground'] = self.colors[str(button.count_near_bombs)]
             button.is_open = True
+            self.list_opened.append(button.number)
+            self.win_or_not(button, True)
+
         else:
             button.configure(text='', relief='sunken', state='disabled')
             self.breadth_first_search(button)
+            self.win_or_not(button, True)
 
     def first_is_bomb(self, button: Buttons):
         """Выполнятся если первый клик попал по бомбе"""
         while button.is_bomb:
-            self.window.create_bombs(button=button)
+            self.window.create_bombs(game=self, button=button)
         self.window.count_bombs()
         for row in self.window.list_button:
             for btn in row:
@@ -79,6 +86,7 @@ class Game:
             current_button = temp_list.pop()
             current_button.configure(image='', relief='sunken', state='disabled')
             current_button.is_open = True
+            self.list_opened.append(current_button.number)
             if current_button.count_near_bombs:
                 current_button['text'] = current_button.count_near_bombs
                 current_button['disabledforeground'] = self.colors[str(current_button.count_near_bombs)]
@@ -89,6 +97,16 @@ class Game:
                         next_button = self.window.list_button[x + dx][y + dy]
                         if not next_button.is_open and next_button.number is not None and current_button not in temp_list:
                             temp_list.append(next_button)
+
+    def win_or_not(self, button, win):
+        if not win:
+            Final(window=self.window, game=self, win=False)
+        elif len(set(self.list_opened)) == self.window.side ** 2 - len(self.list_bombs_numbers):
+            for row in self.window.list_button:
+                for btn in row:
+                    if btn.is_bomb and btn.number != button.number:
+                        btn.configure(image=btn.boom)
+            Final(window=self.window, game=self, win=True)
 
 
 if __name__ == '__main__':

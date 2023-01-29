@@ -3,7 +3,7 @@ from Window import Window
 
 
 class Game:
-
+    """Кла для основного игрового процесса и обработки нажатий"""
     colors = {'1': 'blue', '2': 'green', '3': 'red', '4': 'orange', '5': 'magenta', '6': 'purple', '7': 'brown', '8': 'black'}
 
     def __init__(self):
@@ -53,6 +53,7 @@ class Game:
                         btn.configure(image=btn.boom)
                     while btn._tclCommands:
                         btn.deletecommand(btn._tclCommands[0])
+            self.window.end_game(game=self, win=False)
         elif button.count_near_bombs:
             button.configure(text=button.count_near_bombs, relief='sunken', state='disabled')
             button['disabledforeground'] = self.colors[str(button.count_near_bombs)]

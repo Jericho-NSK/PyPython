@@ -1,8 +1,10 @@
 from tkinter import Button
+
 from PIL import Image, ImageTk
 
 
 class Buttons(Button):
+    """Класс для создания кнопок, по которым будет кликать игрок"""
     button_size = 40
     _font = 'Arial', 11, 'bold'
     _bd = 3

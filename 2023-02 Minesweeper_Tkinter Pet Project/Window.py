@@ -2,31 +2,33 @@ from random import shuffle
 from tkinter import Tk, PhotoImage
 
 from Buttons import Buttons
+from Final import Final
 from Menubar import Menubar
 
 
 class Window(Tk):
+    """Класс для создания основного окна игры с полями в виде кнопок"""
     _title = 'Minesweeper'
-    _mods = {'easy': {5: 4, 10: 12, 15: 20},
-            'normal': {5: 7, 10: 16, 15: 40},
-            'hard': {5: 12, 10: 28, 15: 60}}
+    _mods = {'easy': {'5': 4, '10': 12, '15': 20},
+             'normal': {'5': 7, '10': 16, '15': 40},
+             'hard': {'5': 12, '10': 98, '15': 60}}
     list_button = []
 
     def __init__(self, game):
         super().__init__()
         self.side = 10
         self.side_size = self.side * Buttons.button_size
-        self.mode = 'normal'
-        Menubar(self, game)
+        self.mode = 'hard'
         self.title(self._title)
-        self.new_window()
+        self.new_window(game=game)
         self.resizable(False, False)
-        self.iconphoto(False, PhotoImage(file='FirstBoom.png', master=self))
+        self.iconphoto(True, PhotoImage(file='FirstBoom.png', master=self))
 
-    def new_window(self):
+    def new_window(self, game):
         """Создание окна"""
+        Menubar(self, game)
         self.side_size = self.side * Buttons.button_size
-        self.geometry(f'{self.side_size}x{self.side_size}+1000+100')
+        self.geometry(f'{self.side_size}x{self.side_size}+1100+200')
         self.create_default_buttons()
         self.create_buttons()
         self.create_bombs()
@@ -56,7 +58,7 @@ class Window(Tk):
         """Распределение по кнопкам бомб в зависимости от выбранной сложности"""
         temp_list = list(range(1, self.side ** 2 + 1))
         shuffle(temp_list)
-        bombs_numbers = temp_list[:self._mods[self.mode][self.side]]
+        bombs_numbers = temp_list[:self._mods[self.mode][str(self.side)]]
         print('Всего бомб', len(bombs_numbers))
         if button and button.number in bombs_numbers:
             return button
@@ -86,3 +88,9 @@ class Window(Tk):
                                 count_near_bombs += 1
                 btn.count_near_bombs = count_near_bombs
                 # btn['text'] = btn.count_near_bombs
+
+    def end_game(self, game, win: bool):
+        if win:
+            pass
+        else:
+            Final(window=self, game=game, win=win)

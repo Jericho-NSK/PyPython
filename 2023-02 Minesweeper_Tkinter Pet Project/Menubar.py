@@ -1,7 +1,8 @@
-from tkinter import Menu, StringVar, IntVar
+from tkinter import Menu, StringVar, IntVar, Toplevel
 
 
 class Menubar(Menu):
+    """Класс для создания панели меню с настройками"""
 
     def __init__(self, window, game):
         super().__init__(master=window)
@@ -28,10 +29,12 @@ class Menubar(Menu):
         self.add_command(label='Exit', command=self.quit)
 
     @staticmethod
-    def new_game(window, game):
+    def new_game(window, game, final: Toplevel = False):
         """Операции при начале новой игры"""
+        if final:
+            final.destroy()
         [child.destroy() for child in window.winfo_children() if '!buttons' in child._name]
-        window.new_window()
+        window.new_window(game=game)
         game.bind_commands()
         game._game_starts = False
         game.list_alarms.clear()

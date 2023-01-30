@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 
 
 class Buttons(Button):
-    """Класс для создания кнопок, по которым будет кликать игрок"""
+    """Class for creating buttons that the player will click on"""
     button_size = 40
     _font = 'Arial', 11, 'bold'
     _bd = 3
@@ -29,6 +29,7 @@ class Buttons(Button):
         self.create_icons()
 
     def create_icons(self):
+        """Creating icons in every button"""
         self.first_boom = ImageTk.PhotoImage(self._first_boom_icon)
         self.boom = ImageTk.PhotoImage(self._boom_icon)
         self.alarm = ImageTk.PhotoImage(self._alarm_icon)

@@ -2,23 +2,23 @@ from tkinter import Menu, StringVar, IntVar, Toplevel
 
 
 class Menubar(Menu):
-    """Класс для создания панели меню с настройками"""
+    """Class for creating a menu bar with settings"""
 
     def __init__(self, window, game):
         super().__init__(master=window)
+        self.size_var = IntVar(value=window.side)
+        self.mode_var = StringVar(value=window.mode)
         self.create_menu(window, game)
         window.config(menu=self)
 
     def create_menu(self, window, game):
-        """Создание меню"""
+        """Creating menubar"""
         size = Menu(self, tearoff=0)
-        self.size_var = IntVar(value=window.side)
         size.add_radiobutton(label='5x5', variable=self.size_var, value=5, command=lambda: self.new_size(window, 5))
         size.add_radiobutton(label='10x10', variable=self.size_var, value=10, command=lambda: self.new_size(window, 10))
         size.add_radiobutton(label='15x15', variable=self.size_var, value=15, command=lambda: self.new_size(window, 15))
 
         mode = Menu(self, tearoff=0)
-        self.mode_var = StringVar(value=window.mode)
         mode.add_radiobutton(label='Easy', variable=self.mode_var, value='easy', command=lambda: self.new_mode(window, 'easy'))
         mode.add_radiobutton(label='Normal', variable=self.mode_var, value='normal', command=lambda: self.new_mode(window, 'normal'))
         mode.add_radiobutton(label='Hard', variable=self.mode_var, value='hard', command=lambda: self.new_mode(window, 'hard'))
@@ -30,7 +30,7 @@ class Menubar(Menu):
 
     @staticmethod
     def new_game(window, game, final: Toplevel = False):
-        """Операции при начале новой игры"""
+        """Operations when starting a new game"""
         if final:
             final.destroy()
         [child.destroy() for child in window.winfo_children() if '!buttons' in child._name]
@@ -44,10 +44,10 @@ class Menubar(Menu):
 
     @staticmethod
     def new_size(window, size):
-        """Задание новых размеров при изменении через меню"""
+        """Setting new size when changing using the menu"""
         window.side = size
 
     @staticmethod
     def new_mode(window, mode):
-        """Задание нового режима при изменении через меню"""
+        """Setting a new mode when changing using the menu"""
         window.mode = mode

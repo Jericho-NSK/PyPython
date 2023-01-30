@@ -1,10 +1,12 @@
+from time import perf_counter
+
 from Buttons import Buttons
 from Final import Final
 from Window import Window
-from time import perf_counter
+
 
 class Game:
-    """Кла для основного игрового процесса и обработки нажатий"""
+    """Class for main game and click processing"""
     colors = {'1': 'blue', '2': 'green', '3': 'red', '4': 'orange', '5': 'magenta', '6': 'purple', '7': 'brown', '8': 'black'}
 
     def __init__(self):
@@ -18,14 +20,14 @@ class Game:
         self.window.mainloop()
 
     def bind_commands(self):
-        """Присвоение кнопкам команд при нажатии"""
+        """Binding commands to buttons when pressed"""
         for row in self.window.list_button:
             for btn in row:
                 btn.bind('<Button-1>', lambda temp=btn: self.click_validation(temp))
                 btn.bind('<Button-3>', lambda temp=btn: self.alarm(temp))
 
     def alarm(self, event):
-        """Обработка нажатия правой кнопкой на поле"""
+        """Handling a right click on a field"""
         button: Buttons = event.widget
         if button.is_open:
             return
@@ -35,10 +37,10 @@ class Game:
         else:
             button['image'] = button.alarm
             self.list_alarms.append(button.number)
-        self.window.bottom_panel.counter(self, self.window)
+        self.window.bottom_panel.counter(self)
 
     def click_validation(self, event):
-        """Валидация нажатия левой кнопки перед обработкой"""
+        """Left-click validation before handling"""
         button: Buttons = event.widget
         if button['image'] or button.is_open:
             return
@@ -51,7 +53,7 @@ class Game:
         self.click(button)
 
     def click(self, button):
-        """Обработка нажатия левой кнопкой на поле"""
+        """Handling left-click on the field"""
         if button.is_bomb:
             button['image'] = button.first_boom
             button.is_open = True
@@ -74,7 +76,7 @@ class Game:
             self.win_or_not(button, win=True)
 
     def first_is_bomb(self, button: Buttons):
-        """Выполнятся если первый клик попал по бомбе"""
+        """Executed if the first click hits a bomb"""
         while button.is_bomb:
             self.window.create_bombs(game=self, button=button)
         self.window.count_bombs()
@@ -84,7 +86,7 @@ class Game:
                     btn['image'] = button.alarm
 
     def breadth_first_search(self, button: Buttons):
-        """Алгоритм обхода в ширину для поиска соседних клеток без мин"""
+        """Breadth-first search algorithm for finding neighboring cells without mines"""
         temp_list = [button]
         while temp_list:
             current_button = temp_list.pop()
@@ -103,6 +105,7 @@ class Game:
                             temp_list.append(next_button)
 
     def win_or_not(self, button=None, win=None):
+        """Win or lose check"""
         if not win:
             self.window.after_cancel(self.window.bottom_panel.after_id)
             Final(window=self.window, game=self, win=False)

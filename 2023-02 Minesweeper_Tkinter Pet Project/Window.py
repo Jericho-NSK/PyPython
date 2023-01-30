@@ -1,35 +1,35 @@
 from random import shuffle
 from tkinter import Tk, PhotoImage
 
+from BottomPanel import BottomPanel
 from Buttons import Buttons
 from Menubar import Menubar
-from BottomPanel import BottomPanel
 
 
 class Window(Tk):
-    """Класс для создания основного окна игры с полями в виде кнопок"""
+    """Class for creating the main game window with fields in the form of buttons"""
     _title = 'Minesweeper'
-    mods = {'easy': {'5': (4, 4), '10': (18, 7), '15': (40, 11)},
-             'normal': {'5': (6, 3), '10': (24, 5), '15': (52, 8)},
-             'hard': {'5': (8, 2), '10': (30, 3), '15': (65, 5)}}
+    mods = {'easy': {'5': (4, 3), '10': (18, 4), '15': (40, 5)},
+            'normal': {'5': (6, 2), '10': (24, 3), '15': (52, 4)},
+            'hard': {'5': (8, 1), '10': (30, 2), '15': (65, 3)}}
     list_button = []
 
     def __init__(self, game):
         super().__init__()
         self.bottom_panel = None
-        self.side = 5
+        self.side = 10
         self.side_size = self.side * Buttons.button_size
-        self.mode = 'easy'
+        self.mode = 'normal'
         self.title(self._title)
         self.new_window(game=game)
         self.resizable(False, False)
         self.iconphoto(True, PhotoImage(file='FirstBoom.png', master=self))
 
     def new_window(self, game):
-        """Создание окна"""
+        """Creating window"""
         Menubar(self, game)
         self.side_size = self.side * Buttons.button_size
-        self.geometry(f'{self.side_size}x{self.side_size + 65}+1100+200')
+        self.geometry(f'{self.side_size}x{self.side_size + 65}+1000+200')
         self.create_default_buttons()
         self.create_buttons()
         self.create_bombs(game)
@@ -38,7 +38,7 @@ class Window(Tk):
         self.count_bombs()
 
     def create_default_buttons(self):
-        """Создание полей. По краям нужны дополнительные ряды и колонки, поэтому сначала создается увеличенное число полей, без кнопок"""
+        """Creating fields. Additional rows and columns are needed along the edges, so an increased number of fields are first created"""
         self.list_button = []
         for i in range(self.side + 2):
             temp_list = list()
@@ -47,7 +47,7 @@ class Window(Tk):
             self.list_button.append(temp_list)
 
     def create_buttons(self):
-        """Создание кнопок с полями"""
+        """Creating buttons"""
         temp_number = 1
         for row in range(self.side):
             for column in range(self.side):
@@ -57,7 +57,7 @@ class Window(Tk):
                 temp_number += 1
 
     def create_bombs(self, game, button: Buttons = False):
-        """Распределение по кнопкам бомб в зависимости от выбранной сложности"""
+        """Distribution of bombs by buttons depending on the selected difficulty"""
         temp_list = list(range(1, self.side ** 2 + 1))
         shuffle(temp_list)
         game.list_bombs_numbers = temp_list[:self.mods[self.mode][str(self.side)][0]]
@@ -71,14 +71,16 @@ class Window(Tk):
                     btn.is_bomb = False
 
     def alignment(self):
-        """Выравнивание кнопок по ширине и высоте поля с учетом размера и количества полей"""
-        for row in range(self.grid_size()[1]-2):
+        """Alignment of the buttons and the bottom panel according to the width and height of the field"""
+        for row in range(self.side):
             self.grid_rowconfigure(row, minsize=Buttons.button_size)
-        for column in range(self.grid_size()[0]):
+        for column in range(self.side):
             self.grid_columnconfigure(column, minsize=Buttons.button_size)
+        self.grid_rowconfigure(self.side, minsize=25)
+        self.grid_rowconfigure(self.side + 1, minsize=25)
 
     def count_bombs(self):
-        """Подсчет мин у соседей, присвоение этого числа в атрибуты кнопки"""
+        """Counting mines from neighbors, assigning this number to button attributes"""
         for row in self.list_button:
             for btn in row:
                 count_near_bombs = 0
@@ -88,4 +90,3 @@ class Window(Tk):
                             if self.list_button[btn.x + dx][btn.y + dy].is_bomb:
                                 count_near_bombs += 1
                 btn.count_near_bombs = count_near_bombs
-                # btn['text'] = btn.count_near_bombs  # код для отладки

@@ -34,6 +34,7 @@ class Menubar(Menu):
         if final:
             final.destroy()
         [child.destroy() for child in window.winfo_children() if '!buttons' in child._name]
+        window.after_cancel(window.bottom_panel.after_id)
         window.new_window(game=game)
         game.bind_commands()
         game._game_starts = False

@@ -3,21 +3,23 @@ from tkinter import Tk, PhotoImage
 
 from Buttons import Buttons
 from Menubar import Menubar
+from BottomPanel import BottomPanel
 
 
 class Window(Tk):
     """Класс для создания основного окна игры с полями в виде кнопок"""
     _title = 'Minesweeper'
-    _mods = {'easy': {'5': 4, '10': 18, '15': 40},
-             'normal': {'5': 6, '10': 24, '15': 52},
-             'hard': {'5': 8, '10': 30, '15': 65}}
+    mods = {'easy': {'5': (4, 4), '10': (18, 7), '15': (40, 11)},
+             'normal': {'5': (6, 3), '10': (24, 5), '15': (52, 8)},
+             'hard': {'5': (8, 2), '10': (30, 3), '15': (65, 5)}}
     list_button = []
 
     def __init__(self, game):
         super().__init__()
+        self.bottom_panel = None
         self.side = 5
         self.side_size = self.side * Buttons.button_size
-        self.mode = 'normal'
+        self.mode = 'easy'
         self.title(self._title)
         self.new_window(game=game)
         self.resizable(False, False)
@@ -27,10 +29,11 @@ class Window(Tk):
         """Создание окна"""
         Menubar(self, game)
         self.side_size = self.side * Buttons.button_size
-        self.geometry(f'{self.side_size}x{self.side_size}+1100+200')
+        self.geometry(f'{self.side_size}x{self.side_size + 65}+1100+200')
         self.create_default_buttons()
         self.create_buttons()
         self.create_bombs(game)
+        self.bottom_panel = BottomPanel(window=self, game=game)
         self.alignment()
         self.count_bombs()
 
@@ -57,7 +60,7 @@ class Window(Tk):
         """Распределение по кнопкам бомб в зависимости от выбранной сложности"""
         temp_list = list(range(1, self.side ** 2 + 1))
         shuffle(temp_list)
-        game.list_bombs_numbers = temp_list[:self._mods[self.mode][str(self.side)]]
+        game.list_bombs_numbers = temp_list[:self.mods[self.mode][str(self.side)][0]]
         if button and button.number in game.list_bombs_numbers:
             return button
         for row in self.list_button:
@@ -69,7 +72,7 @@ class Window(Tk):
 
     def alignment(self):
         """Выравнивание кнопок по ширине и высоте поля с учетом размера и количества полей"""
-        for row in range(self.grid_size()[1]):
+        for row in range(self.grid_size()[1]-2):
             self.grid_rowconfigure(row, minsize=Buttons.button_size)
         for column in range(self.grid_size()[0]):
             self.grid_columnconfigure(column, minsize=Buttons.button_size)

@@ -10,7 +10,9 @@ class Final(Toplevel):
 
     def __init__(self, window, game, win: bool):
         super().__init__(takefocus=True)
-        self.geometry('500x300+600+200')
+        self.size_var = IntVar(value=window.side)
+        self.mode_var = StringVar(value=window.mode)
+        self.geometry('500x290+598+200')
         self.resizable(False, False)
         self.create_menu(window, game, win)
         self.final_alignment()
@@ -25,11 +27,10 @@ class Final(Toplevel):
 
     def create_menu(self, window, game, win):
         """Создание финального окна"""
-        self.result_label = Label(master=self, font=self._font, text='YOU ARE WINNER!!!' if win else 'YOU LOSE :(',
+        Label(master=self, font=self._font_buttons, text='YOU ARE WINNER!!!' if win else 'YOU LOSE :(',
                                   fg='green' if win else 'red').grid(row=0, column=1, columnspan=3)
 
-        self.side_label = Label(master=self, font=self._font, text='Size').grid(row=1, column=1)
-        self.size_var = IntVar(value=window.side)
+        Label(master=self, font=self._font, text='Size').grid(row=1, column=1)
 
         Radiobutton(master=self, text='5x5', font=self._font, variable=self.size_var, value=5, relief='groove', bd=5, width=7,
                     command=lambda: Menubar.new_size(window, 5)).grid(row=2, column=1)
@@ -38,8 +39,7 @@ class Final(Toplevel):
         Radiobutton(master=self, text='15x15', font=self._font, variable=self.size_var, value=15, relief='groove', bd=5, width=7,
                     command=lambda: Menubar.new_size(window, 15)).grid(row=4, column=1)
 
-        self.mode_label = Label(master=self, font=self._font, text='Mode').grid(row=1, column=3)
-        self.mode_var = StringVar(value=window.mode)
+        Label(master=self, font=self._font, text='Mode').grid(row=1, column=3)
 
         Radiobutton(master=self, text='Easy', font=self._font, variable=self.mode_var, value='easy', relief='groove', bd=5, width=7,
                     command=lambda: Menubar.new_mode(window, 'easy')).grid(row=2, column=3)

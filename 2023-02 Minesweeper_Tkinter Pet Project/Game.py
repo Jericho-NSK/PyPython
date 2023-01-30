@@ -1,7 +1,7 @@
 from Buttons import Buttons
 from Final import Final
 from Window import Window
-
+from time import perf_counter
 
 class Game:
     """Кла для основного игрового процесса и обработки нажатий"""
@@ -43,7 +43,10 @@ class Game:
             return
         if not self._game_starts and button.is_bomb:
             self.first_is_bomb(button)
-        self._game_starts = True
+        if not self._game_starts:
+            self.window.bottom_panel.base_time = perf_counter() + self.window.mods[self.window.mode][str(self.window.side)][1] * 60 + 1
+            self.window.bottom_panel.tick(self, self.window)
+            self._game_starts = True
         self.click(button)
 
     def click(self, button):
@@ -55,19 +58,19 @@ class Game:
                 for btn in row:
                     if btn.is_bomb and btn.number != button.number:
                         btn.configure(image=btn.boom)
-            self.win_or_not(button, False)
+            self.win_or_not(button, win=False)
 
         elif button.count_near_bombs:
             button.configure(text=button.count_near_bombs, relief='sunken', state='disabled')
             button['disabledforeground'] = self.colors[str(button.count_near_bombs)]
             button.is_open = True
             self.list_opened.append(button.number)
-            self.win_or_not(button, True)
+            self.win_or_not(button, win=True)
 
         else:
             button.configure(text='', relief='sunken', state='disabled')
             self.breadth_first_search(button)
-            self.win_or_not(button, True)
+            self.win_or_not(button, win=True)
 
     def first_is_bomb(self, button: Buttons):
         """Выполнятся если первый клик попал по бомбе"""
@@ -98,10 +101,12 @@ class Game:
                         if not next_button.is_open and next_button.number is not None and current_button not in temp_list:
                             temp_list.append(next_button)
 
-    def win_or_not(self, button, win):
+    def win_or_not(self, button=None, win=None):
         if not win:
+            self.window.after_cancel(self.window.bottom_panel.after_id)
             Final(window=self.window, game=self, win=False)
         elif len(set(self.list_opened)) == self.window.side ** 2 - len(self.list_bombs_numbers):
+            self.window.after_cancel(self.window.bottom_panel.after_id)
             for row in self.window.list_button:
                 for btn in row:
                     if btn.is_bomb and btn.number != button.number:

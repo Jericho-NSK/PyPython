@@ -35,6 +35,7 @@ class Game:
         else:
             button['image'] = button.alarm
             self.list_alarms.append(button.number)
+        self.window.bottom_panel.counter(self, self.window)
 
     def click_validation(self, event):
         """Валидация нажатия левой кнопки перед обработкой"""

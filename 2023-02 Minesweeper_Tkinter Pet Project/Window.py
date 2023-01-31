@@ -9,9 +9,9 @@ from Menubar import Menubar
 class Window(Tk):
     """Class for creating the main game window with fields in the form of buttons"""
     _title = 'Minesweeper'
-    mods = {'easy': {'5': (4, 3), '10': (18, 4), '15': (40, 5)},
-            'normal': {'5': (6, 2), '10': (24, 3), '15': (52, 4)},
-            'hard': {'5': (8, 1), '10': (30, 2), '15': (65, 3)}}
+    mods = {'easy': {'5': (4, 3), '10': (18, 4), '15': (35, 6)},
+            'normal': {'5': (6, 2), '10': (24, 3), '15': (45, 5)},
+            'hard': {'5': (8, 1), '10': (30, 2), '15': (55, 4)}}
     list_button = []
 
     def __init__(self, game):

@@ -10,14 +10,14 @@ class Window(Tk):
     """Class for creating the main game window with fields in the form of buttons"""
     _title = 'Minesweeper'
     mods = {'easy': {'5': (4, 3), '10': (18, 4), '15': (35, 6)},
-            'normal': {'5': (24, 2), '10': (24, 3), '15': (45, 5)},
+            'normal': {'5': (6, 2), '10': (24, 3), '15': (45, 5)},
             'hard': {'5': (8, 1), '10': (30, 2), '15': (55, 4)}}
     list_button = []
 
     def __init__(self, game):
         super().__init__()
         self.bottom_panel = None
-        self.side = 5
+        self.side = 10
         self.side_size = self.side * Buttons.button_size
         self.mode = 'normal'
         self.title(self._title)

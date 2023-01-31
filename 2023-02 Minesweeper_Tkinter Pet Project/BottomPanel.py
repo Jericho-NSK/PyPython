@@ -27,11 +27,11 @@ class BottomPanel:
             text_column = 3
             count_column = 9
 
-        Label(master=window, text='Timer:', font=self._font).grid(row=window.side, column=text_column, columnspan=3, sticky='e', padx=15)
+        Label(master=window, text='Timer:', font=self._font).grid(row=window.side, column=text_column, columnspan=3, sticky='e', padx=30)
         self.time = Label(master=window, text=f'{window.mods[window.mode][str(window.side)][1]}:00', font=self._font)
         self.time.grid(row=window.side, column=count_column, columnspan=2, sticky='we')
 
-        Label(master=window, text='Bombs:', font=self._font).grid(row=window.side + 1, column=text_column, columnspan=3, sticky='e', padx=15)
+        Label(master=window, text='Bombs:', font=self._font).grid(row=window.side + 1, column=text_column, columnspan=3, sticky='e', padx=30)
         self.counter_bombs = Label(master=window, text=len(game.list_bombs_numbers), font=self._font)
         self.counter_bombs.grid(row=window.side + 1, column=count_column, columnspan=2, sticky='we')
 

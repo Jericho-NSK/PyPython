@@ -1,4 +1,5 @@
-from tkinter import Menu, StringVar, IntVar, Toplevel
+from tkinter import Menu, StringVar, IntVar, Toplevel, Label, Button
+from webbrowser import open_new_tab
 
 
 class Menubar(Menu):
@@ -26,6 +27,7 @@ class Menubar(Menu):
         self.add_command(label='New', command=lambda: self.new_game(window, game))
         self.add_cascade(label='Size', menu=size)
         self.add_cascade(label='Mode', menu=mode)
+        self.add_command(label='About', command=About)
         self.add_command(label='Exit', command=self.quit)
 
     @staticmethod
@@ -51,3 +53,43 @@ class Menubar(Menu):
     def new_mode(window, mode):
         """Setting a new mode when changing using the menu"""
         window.mode = mode
+
+
+class About(Toplevel):
+    """Class for creating 'About' window"""
+    _font = 'Comic Sans MS', 12, 'bold'
+    _font_url = 'Comic Sans MS', 12, 'bold', 'underline', 'italic'
+
+    def __init__(self):
+        super().__init__()
+        self.geometry('500x340+498+100')
+        self.resizable(False, False)
+        self.create_about()
+        self.grab_set()
+
+    def create_about(self):
+        """Creating 'About' window"""
+        text_name = 'Minesweeper ver. 1.0'
+        text_rules = 'Left-click checks the cell\nRight-click marks the cell as "ALARM"\nFirst click will never find the bomb'
+        text = 'Created by Jericho for Pet-project'
+        pady = 4
+
+        Label(master=self, font=self._font, text=text_name, fg='brown').pack(pady=pady)
+        Label(master=self, font=self._font, text=text_rules, fg='green').pack(pady=pady)
+        Label(master=self, font=self._font, text=text, fg='magenta').pack(pady=pady)
+
+        link = Label(master=self, font=self._font_url, text='Link to GitHub', fg='blue', cursor='hand2')
+        link.pack(pady=pady)
+        link.bind('<Button-1>', lambda temp=link: self.open_url(link))
+
+        Label(master=self, font=self._font, text='2023', fg='red').pack(pady=pady)
+
+        ok_button = Button(master=self, text='OK', bd=8, font=self._font, width=12)
+        ok_button.pack(pady=pady)
+        ok_button.bind('<Button-1>', lambda temp=ok_button: self.destroy())
+
+    @staticmethod
+    def open_url(link):
+        """Opening URL to GitHub"""
+        open_new_tab('https://github.com/Jericho-NSK/PyPython/tree/main/2023-02%20Minesweeper_Tkinter%20Pet%20Project')
+        link['fg'] = 'purple'

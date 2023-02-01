@@ -16,10 +16,12 @@ class Window(Tk):
 
     def __init__(self, game):
         super().__init__()
+        self.mode = None
+        self.side_size = None
+        self.side = None
         self.bottom_panel = None
-        self.side = 10
-        self.side_size = self.side * Buttons.button_size
-        self.mode = 'normal'
+        self.new_side = 10
+        self.new_mode = 'normal'
         self.title(self._title)
         self.new_window(game=game)
         self.resizable(False, False)
@@ -28,6 +30,7 @@ class Window(Tk):
     def new_window(self, game):
         """Creating window"""
         Menubar(self, game)
+        self.side = self.new_side
         self.side_size = self.side * Buttons.button_size
         self.geometry(f'{self.side_size}x{self.side_size + 75}+1000+100')
         self.create_default_buttons()
@@ -58,6 +61,7 @@ class Window(Tk):
 
     def create_bombs(self, game, button: Buttons = False):
         """Distribution of bombs by buttons depending on the selected difficulty"""
+        self.mode = self.new_mode
         temp_list = list(range(1, self.side ** 2 + 1))
         shuffle(temp_list)
         game.list_bombs_numbers = temp_list[:self.mods[self.mode][str(self.side)][0]]

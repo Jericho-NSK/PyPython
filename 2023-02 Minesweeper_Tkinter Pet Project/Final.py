@@ -10,8 +10,8 @@ class Final(Toplevel):
 
     def __init__(self, window, game, win: bool):
         super().__init__(takefocus=True)
-        self.size_var = IntVar(value=window.side)
-        self.mode_var = StringVar(value=window.mode)
+        self.size_var = IntVar(value=window.new_side)
+        self.mode_var = StringVar(value=window.new_mode)
         self.geometry('500x350+498+100')
         self.resizable(False, False)
         self.create_menu(window, game, win)

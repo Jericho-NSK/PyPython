@@ -7,8 +7,8 @@ class Menubar(Menu):
 
     def __init__(self, window, game):
         super().__init__(master=window)
-        self.size_var = IntVar(value=window.side)
-        self.mode_var = StringVar(value=window.mode)
+        self.size_var = IntVar(value=window.new_side)
+        self.mode_var = StringVar(value=window.new_mode)
         self.create_menu(window, game)
         window.config(menu=self)
 
@@ -47,12 +47,12 @@ class Menubar(Menu):
     @staticmethod
     def new_size(window, size):
         """Setting new size when changing using the menu"""
-        window.side = size
+        window.new_side = size
 
     @staticmethod
     def new_mode(window, mode):
         """Setting a new mode when changing using the menu"""
-        window.mode = mode
+        window.new_mode = mode
 
 
 class About(Toplevel):

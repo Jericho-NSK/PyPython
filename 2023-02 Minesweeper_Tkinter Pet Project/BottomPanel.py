@@ -4,7 +4,7 @@ from tkinter import Label
 
 class BottomPanel:
     """Class for creating a bottom field with a timer and bomb counter"""
-    _font = 'Calibre', 12, 'bold'
+    _font = 'Comic Sans MS', 12, 'bold'
 
     def __init__(self, window, game):
         self.base_time = None

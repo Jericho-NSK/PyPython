@@ -29,7 +29,7 @@ class Window(Tk):
         """Creating window"""
         Menubar(self, game)
         self.side_size = self.side * Buttons.button_size
-        self.geometry(f'{self.side_size}x{self.side_size + 65}+1000+100')
+        self.geometry(f'{self.side_size}x{self.side_size + 75}+1000+100')
         self.create_default_buttons()
         self.create_buttons()
         self.create_bombs(game)

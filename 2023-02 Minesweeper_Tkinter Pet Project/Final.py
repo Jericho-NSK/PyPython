@@ -12,7 +12,7 @@ class Final(Toplevel):
         super().__init__(takefocus=True)
         self.size_var = IntVar(value=window.side)
         self.mode_var = StringVar(value=window.mode)
-        self.geometry('500x340+498+100')
+        self.geometry('500x350+498+100')
         self.resizable(False, False)
         self.create_menu(window, game, win)
         self.final_alignment()

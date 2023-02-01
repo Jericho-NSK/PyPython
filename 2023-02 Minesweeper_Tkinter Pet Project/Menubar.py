@@ -62,7 +62,7 @@ class About(Toplevel):
 
     def __init__(self):
         super().__init__()
-        self.geometry('500x340+498+100')
+        self.geometry('500x350+498+100')
         self.resizable(False, False)
         self.create_about()
         self.grab_set()

@@ -90,8 +90,12 @@ class Game:
         temp_list = [button]
         while temp_list:
             current_button = temp_list.pop()
-            current_button.configure(image='', relief='sunken', state='disabled')
+            current_button.configure(relief='sunken', state='disabled')
             current_button.is_open = True
+            if current_button['image']:
+                current_button['image'] = ''
+                self.list_alarms.pop(self.list_alarms.index(current_button.number))
+                self.window.bottom_panel.counter(self)
             self.list_opened.append(current_button.number)
             if current_button.count_near_bombs:
                 current_button['text'] = current_button.count_near_bombs
@@ -115,6 +119,7 @@ class Game:
                 for btn in row:
                     if btn.is_bomb and btn.number != button.number:
                         btn.configure(image=btn.boom)
+            self.window.bottom_panel.counter_bombs.configure(text='0')
             Final(window=self.window, game=self, win=True)
 
 

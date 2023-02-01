@@ -112,6 +112,7 @@ class Game:
         """Win or lose check"""
         if not win:
             self.window.after_cancel(self.window.bottom_panel.after_id)
+            self.window.bottom_panel.counter_bombs.configure(fg='red')
             Final(window=self.window, game=self, win=False)
         elif len(set(self.list_opened)) == self.window.side ** 2 - len(self.list_bombs_numbers):
             self.window.after_cancel(self.window.bottom_panel.after_id)
@@ -119,7 +120,7 @@ class Game:
                 for btn in row:
                     if btn.is_bomb and btn.number != button.number:
                         btn.configure(image=btn.boom)
-            self.window.bottom_panel.counter_bombs.configure(text='0')
+            self.window.bottom_panel.counter_bombs.configure(text='0', fg='green')
             Final(window=self.window, game=self, win=True)
 
 

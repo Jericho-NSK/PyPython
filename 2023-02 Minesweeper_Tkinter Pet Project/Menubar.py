@@ -4,6 +4,7 @@ from webbrowser import open_new_tab
 
 class Menubar(Menu):
     """Class for creating a menu bar with settings"""
+    about = None
 
     def __init__(self, window, game):
         super().__init__(master=window)
@@ -27,8 +28,16 @@ class Menubar(Menu):
         self.add_command(label='New', command=lambda: self.new_game(window, game))
         self.add_cascade(label='Size', menu=size)
         self.add_cascade(label='Mode', menu=mode)
-        self.add_command(label='About', command=About)
+        self.add_command(label='About', command=self.create_about)
         self.add_command(label='Exit', command=self.quit)
+
+    @classmethod
+    def create_about(cls):
+        """Destroy to create only one window About"""
+        if cls.about:
+            cls.about.focus()
+        else:
+            cls.about = About()
 
     @staticmethod
     def new_game(window, game, final: Toplevel = False):
@@ -65,7 +74,6 @@ class About(Toplevel):
         self.geometry('500x350+498+100')
         self.resizable(False, False)
         self.create_about()
-        self.grab_set()
 
     def create_about(self):
         """Creating 'About' window"""
@@ -87,6 +95,10 @@ class About(Toplevel):
         ok_button = Button(master=self, text='OK', bd=8, font=self._font, width=12, cursor='hand2')
         ok_button.pack(pady=pady)
         ok_button.bind('<Button-1>', lambda temp=ok_button: self.destroy())
+
+    def destroy(self):
+        Menubar.about = None
+        super().destroy()
 
     @staticmethod
     def open_url(link):

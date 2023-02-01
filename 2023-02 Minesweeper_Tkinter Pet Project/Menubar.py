@@ -69,7 +69,7 @@ class About(Toplevel):
 
     def create_about(self):
         """Creating 'About' window"""
-        text_name = 'Minesweeper ver. 1.0'
+        text_name = 'Minesweeper v1.0'
         text_rules = 'Left-click checks the cell\nRight-click marks the cell as "ALARM"\nFirst click will never find the bomb'
         text = 'Created by Jericho for Pet-project'
         pady = 4
@@ -84,7 +84,7 @@ class About(Toplevel):
 
         Label(master=self, font=self._font, text='2023', fg='red').pack(pady=pady)
 
-        ok_button = Button(master=self, text='OK', bd=8, font=self._font, width=12)
+        ok_button = Button(master=self, text='OK', bd=8, font=self._font, width=12, cursor='hand2')
         ok_button.pack(pady=pady)
         ok_button.bind('<Button-1>', lambda temp=ok_button: self.destroy())
 

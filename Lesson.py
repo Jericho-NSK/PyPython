@@ -1,31 +1,54 @@
-from tkinter import Tk, Menu, IntVar
+import pygame
 
-root = Tk()
-menubar = Menu(root)
-size = Menu(tearoff=0)
-size_var = IntVar(value=10)
-size.add_radiobutton(label='5x5', variable=size_var, command=lambda: None)
-size.add_radiobutton(label='10x10', variable=size_var, value=10, command=lambda: None)
-size.add_radiobutton(label='15x15', variable=size_var, command=lambda: None)
+pygame.init()
 
-menubar.add_cascade(label='Size', menu=size)
-root.config(menu=menubar)
-root.mainloop()
+W = 600
+H = 400
 
+sc = pygame.display.set_mode((W, H))
+pygame.display.set_caption("Класс Rect")
 
+WHITE = (255, 255, 255)
+BLUE = (0, 0, 255)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
 
-# import tkinter as tk
-#
-# root = tk.Tk()
-#
-# radio_var = tk.IntVar(value=10)  # Option 10 is the default.
-#
-# menubar = tk.Menu(root)
-# size = tk.Menu(menubar, tearoff=0)
-# size.add_radiobutton(label='5x5', variable=radio_var, value=5)
-# size.add_radiobutton(label='10x10', variable=radio_var, value=10)
-# size.add_radiobutton(label='15x15', variable=radio_var, value=15)
-# menubar.add_cascade(label='Size', menu=size)
-# root.config(menu=menubar)
-#
-# root.mainloop()
+FPS = 24        # число кадров в секунду
+clock = pygame.time.Clock()
+
+ground = H-70           # высота земли
+jump_force = 20         # сила прыжка
+move = jump_force+1     # текущая вертикальная скорость
+
+hero = pygame.Surface((40, 50))
+hero.fill(BLUE)
+rect = hero.get_rect(centerx=W//2)
+
+rect.bottom = ground
+
+rect_update = pygame.Rect(rect.x, 0, rect.width, ground)
+sc.fill(WHITE)
+pygame.display.update()
+
+while 1:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            exit()
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and ground == rect.bottom:
+                move = -jump_force
+
+    if move <= jump_force:
+        if rect.bottom + move < ground:
+            rect.bottom += move
+            if move < jump_force:
+                move += 1
+        else:
+            rect.bottom = ground
+            move = jump_force+1
+
+    sc.fill(WHITE)
+    sc.blit(hero, rect)
+    pygame.display.update(rect_update)
+
+    clock.tick(FPS)

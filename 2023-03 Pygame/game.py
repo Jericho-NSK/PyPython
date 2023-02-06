@@ -2,7 +2,7 @@ from random import randint
 
 from pygame import *
 
-from Balls import Ball
+from balls import Ball
 
 init()
 time.set_timer(USEREVENT, 1000)

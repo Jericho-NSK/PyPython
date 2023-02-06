@@ -23,13 +23,13 @@ class Window(Tk):
         self.new_side = 10
         self.new_mode = 'normal'
         self.title(self._title)
+        self.menubar = Menubar(self, game)
         self.new_window(game=game)
         self.resizable(False, False)
         self.iconphoto(True, PhotoImage(data=Buttons._first_boom, format='png', master=self))
 
     def new_window(self, game):
         """Creating window"""
-        Menubar(self, game)
         self.side = self.new_side
         self.side_size = self.side * Buttons.button_size
         self.geometry(f'{self.side_size}x{self.side_size + 75}+1000+100')

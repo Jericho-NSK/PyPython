@@ -44,7 +44,7 @@ class Menubar(Menu):
         """Operations when starting a new game"""
         if final:
             final.destroy()
-        [child.destroy() for child in window.winfo_children() if '!buttons' in child._name]
+        [child.destroy() for child in window.winfo_children() if '!buttons' in child._name or '!label' in child._name]
         if window.bottom_panel.after_id:
             window.after_cancel(window.bottom_panel.after_id)
         window.new_window(game=game)

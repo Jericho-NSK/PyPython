@@ -1,6 +1,6 @@
 from tkinter import Toplevel, Label, Radiobutton, Button, IntVar, StringVar
 
-from Menubar import Menubar
+from menubar_and_about_window import Menubar
 
 
 class Final(Toplevel):

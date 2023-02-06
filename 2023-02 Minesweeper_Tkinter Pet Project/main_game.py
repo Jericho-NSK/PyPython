@@ -1,8 +1,8 @@
 from time import perf_counter
 
-from Buttons import Buttons
-from Final import Final
-from Window import Window
+from buttons import Buttons
+from final_window import Final
+from window import Window
 
 
 class Game:

@@ -1,9 +1,9 @@
 from random import shuffle
 from tkinter import Tk, PhotoImage
 
-from BottomPanel import BottomPanel
-from Buttons import Buttons
-from Menubar import Menubar
+from bottom_panel import BottomPanel
+from buttons import Buttons
+from menubar_and_about_window import Menubar
 
 
 class Window(Tk):

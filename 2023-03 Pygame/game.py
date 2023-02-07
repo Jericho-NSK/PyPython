@@ -1,8 +1,11 @@
-from random import randint
+from random import randint, choice
 
 import pygame
 
-from balls import Ball
+from bombs import Bombs
+
+pygame.mixer.pre_init(44100, -16, 1, 512)
+pygame.init()
 
 WIDTH, HEIGHT = 1280, 720
 FPS = 60
@@ -10,26 +13,28 @@ FPS = 60
 
 class Game:
     window: pygame.Surface
-    pygame.init()
-    ball_size = 80
-    bombs_data = ({'file': 'Bomb_1.png', 'score': 100},
-                  {'file': 'Bomb_2.png', 'score': 200},
-                  {'file': 'Bomb_3.png', 'score': 300})
-    bg = pygame.image.load('back.png')
-    main_icon = pygame.image.load('Bomb_3.png')
-    cart = pygame.image.load('cart.png')
+    music = 'Chi-Mai', 'Le-Vent-Le-Cri', 'Lonely', 'Memory', 'Requiem'
     title = 'Pet Game'
+    bg = pygame.image.load('images/back.png')
+    main_icon = pygame.image.load('images/Bomb_3.png')
+    cart = pygame.image.load('images/cart.png')
     cart_speed = 20
     score_font = pygame.font.SysFont('comicsanms', size=48, italic=True)
 
     def __init__(self):
         self.score_counter = 0
         self.score_text = self.score_font.render(str(self.score_counter), True, 'red')
+        self.sound_catch = pygame.mixer.Sound('sounds/catch.ogg')
         self.create_window()
+        self.bombs_images = [pygame.image.load('images/' + bomb['file'] + '.png').convert_alpha() for bomb in Bombs.bombs_data]
         self.create_cart()
-        self.bombs = pygame.sprite.Group()
-        self.bombs_images = [pygame.image.load(bomb['file']).convert_alpha() for bomb in self.bombs_data]
+        self.create_music()
         self.mainloop()
+
+    def create_music(self):
+        pygame.mixer.music.load('music/' + choice(self.music) + '.ogg')
+        pygame.mixer.music.set_volume(0.15)
+        pygame.mixer.music.play(loops=0, fade_ms=5000)
 
     def create_window(self):
         self.window = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -42,15 +47,10 @@ class Game:
         self.cart = self.cart.convert_alpha()
         self.cart_rect = self.cart.get_rect(centerx=WIDTH / 2.3, bottom=HEIGHT - 100)
 
-    def create_bomb(self):
-        index = randint(0, len(self.bombs_images) - 1)
-        x = randint(int(self.ball_size / 2), int(WIDTH - self.ball_size / 2))
-        speed = randint(1, 4)
-        return Ball(x, speed, self.bombs_images[index], self.bombs_data[index]['score'], self.bombs, self.ball_size)
-
     def catching_bombs(self):
-        for bomb in self.bombs:
+        for bomb in Bombs.bombs:
             if self.cart_rect.collidepoint(bomb.rect.center):
+                self.sound_catch.play()
                 self.score_counter += bomb.score
                 self.score_text = self.score_font.render(str(self.score_counter), True, 'red')
                 bomb.kill()
@@ -58,25 +58,28 @@ class Game:
     def window_updating(self):
         self.catching_bombs()
         self.window.blit(self.bg, (0, 0))
+        Bombs.bombs.draw(self.window)
         self.window.blit(self.score_text, (20, 20))
-        self.bombs.draw(self.window)
         self.window.blit(self.cart, (self.cart_rect.x, self.cart_rect.y))
-        self.bombs.update(HEIGHT, self.ball_size)
+        Bombs.bombs.update(HEIGHT, Bombs.bomb_size)
         pygame.display.flip()
         pygame.time.Clock().tick(FPS)
 
     def mainloop(self):
         game_exit = False
-        pygame.time.set_timer(pygame.USEREVENT, 1000)
+        pygame.time.set_timer(pygame.USEREVENT, 2000)
 
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     game_exit = True
                 elif event.type == pygame.USEREVENT:
-                    self.create_bomb()
+                    Bombs.create_bomb(window=self, width=WIDTH)
             if game_exit:
                 break
+
+            if not pygame.mixer.music.get_busy():
+                self.create_music()
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_a]:
@@ -87,8 +90,9 @@ class Game:
                 self.cart_rect.x += self.cart_speed
                 if self.cart_rect.x + self.cart_rect.width >= WIDTH:
                     self.cart_rect.x = WIDTH - self.cart_rect.width
+            # elif keys[pygame.K_q]:
+            #     self.sound_catch.play()
             self.window_updating()
-
 
 
 if __name__ == '__main__':

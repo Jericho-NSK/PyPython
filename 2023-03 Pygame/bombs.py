@@ -1,10 +1,9 @@
 from random import randint
 
 import pygame
-from pygame import sprite
 
 
-class Bombs(sprite.Sprite):
+class Bombs(pygame.sprite.Sprite):
     bomb_size = 80
     bombs_data = ({'file': 'Bomb_1', 'score': 100},
                   {'file': 'Bomb_2', 'score': 200},
@@ -29,5 +28,5 @@ class Bombs(sprite.Sprite):
     def create_bomb(window, width):
         index = randint(0, len(window.bombs_images) - 1)
         x = randint(int(Bombs.bomb_size / 2), int(width - Bombs.bomb_size / 2))
-        speed = randint(1, 40)
+        speed = randint(1, 5)
         return Bombs(x, speed, window.bombs_images[index], Bombs.bombs_data[index]['score'])

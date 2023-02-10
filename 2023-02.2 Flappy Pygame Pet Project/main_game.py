@@ -6,7 +6,7 @@ from bird import Bird
 from walls import Wall
 
 pygame.init()
-WIDTH, HEIGHT = 1440, 720
+WIDTH, HEIGHT = 1280, 720
 FPS = 60
 
 
@@ -14,7 +14,7 @@ class Game:
     walls = pygame.sprite.Group()
     score_font = pygame.font.SysFont('comicsanms', size=48, italic=True)
     score_text = 0
-
+    window = pygame.display.set_mode(size=(WIDTH, HEIGHT))
 
     def __init__(self):
         self.game_starts = False
@@ -24,8 +24,6 @@ class Game:
         self.mainloop()
 
     def create_window(self):
-        self.window = pygame.display.set_mode(size=(WIDTH, HEIGHT))
-
         self.bird_images = [pygame.image.load('images/' + bird).convert_alpha() for bird in Bird.images]
         self.wall_image = pygame.image.load('images/column.png').convert_alpha()
         pygame.display.set_caption('NOT a flappy bird')
@@ -41,7 +39,7 @@ class Game:
             self.crash()
             self.bg_rect.x -= 1
         self.window.blit(self.bg, (self.bg_rect.x, 0))
-        self.window.blit(self.bg, (self.bg_rect.x + WIDTH, 0))
+        self.window.blit(self.bg, (self.bg_rect.x + self.bg_rect.width, 0))
         if self.bg_rect.x <= - WIDTH:
             self.bg_rect.x = 0
         self.walls.draw(self.window)

@@ -25,9 +25,11 @@ class Game:
         self.score = self.score_font.render(str(self.score_text), True, 'red')
         self.track = HEIGHT // 2
         self.create_window()
+
         self.bird = Bird(self, WIDTH, HEIGHT)
         self.menu = Menu(self)
         self.menu.mainloop(self.window)
+
         self.mainloop()
 
     def create_window(self):
@@ -38,6 +40,7 @@ class Game:
         self.window.blit(self.bg, (self.bg_rect.x, self.bg_rect.y))
         pygame.display.set_caption('NOT a flappy bird')
         pygame.display.set_icon(self.bird_images[-1])
+
 
     def update_window(self):
         if self.game_starts:

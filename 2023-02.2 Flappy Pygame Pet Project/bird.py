@@ -35,6 +35,6 @@ class Bird(pygame.Surface):
 
             key = pygame.key.get_pressed()
             if (key[pygame.K_a] or key[pygame.K_LEFT]) and self.rect.centerx > 0:
-                self.rect.centerx -= 2
+                self.rect.centerx -= 4
             if (key[pygame.K_d] or key[pygame.K_RIGHT]) and self.rect.right < width - self.rect.width:
-                self.rect.centerx += 2
+                self.rect.centerx += 4

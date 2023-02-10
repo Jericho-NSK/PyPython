@@ -14,24 +14,24 @@ class Game:
     walls = pygame.sprite.Group()
     score_font = pygame.font.SysFont('comicsanms', size=48, italic=True)
     score_text = 0
-    window = pygame.display.set_mode(size=(WIDTH, HEIGHT))
+    window = pygame.display.set_mode(size=(WIDTH, HEIGHT), flags=pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.SCALED, depth=32, vsync=True)
 
     def __init__(self):
         self.game_starts = False
         self.score = self.score_font.render(str(self.score_text), True, 'red')
         self.track = HEIGHT // 2
         self.create_window()
+        self.bird = Bird(self, WIDTH, HEIGHT)
         self.mainloop()
 
     def create_window(self):
         self.bird_images = [pygame.image.load('images/' + bird).convert_alpha() for bird in Bird.images]
         self.wall_image = pygame.image.load('images/column.png').convert_alpha()
-        pygame.display.set_caption('NOT a flappy bird')
-        pygame.display.set_icon(self.bird_images[-1])
         self.bg = pygame.image.load('images/bg2.png').convert()
         self.bg_rect = self.bg.get_rect()
         self.window.blit(self.bg, (self.bg_rect.x, self.bg_rect.y))
-        self.bird = Bird(self, WIDTH, HEIGHT)
+        pygame.display.set_caption('NOT a flappy bird')
+        pygame.display.set_icon(self.bird_images[-1])
 
     def update_window(self):
         if self.game_starts:
@@ -40,7 +40,7 @@ class Game:
             self.bg_rect.x -= 1
         self.window.blit(self.bg, (self.bg_rect.x, 0))
         self.window.blit(self.bg, (self.bg_rect.x + self.bg_rect.width, 0))
-        if self.bg_rect.x <= - WIDTH:
+        if self.bg_rect.x <= - self.bg_rect.width:
             self.bg_rect.x = 0
         self.walls.draw(self.window)
         self.window.blit(self.score, (20, 20))

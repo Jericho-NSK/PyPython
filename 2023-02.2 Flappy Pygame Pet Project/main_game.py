@@ -4,6 +4,7 @@ import pygame
 
 from bird import Bird
 from walls import Wall
+from menu import Menu
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
@@ -14,7 +15,10 @@ class Game:
     walls = pygame.sprite.Group()
     score_font = pygame.font.SysFont('comicsanms', size=48, italic=True)
     score_text = 0
-    window = pygame.display.set_mode(size=(WIDTH, HEIGHT), flags=pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.SCALED, depth=32, vsync=True)
+    window = pygame.display.set_mode(size=(WIDTH, HEIGHT),
+                                     flags=pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.SCALED | pygame.RESIZABLE,
+                                     depth=32,
+                                     vsync=True)
 
     def __init__(self):
         self.game_starts = False
@@ -22,6 +26,8 @@ class Game:
         self.track = HEIGHT // 2
         self.create_window()
         self.bird = Bird(self, WIDTH, HEIGHT)
+        self.menu = Menu(self)
+        self.menu.mainloop(self.window)
         self.mainloop()
 
     def create_window(self):
@@ -55,6 +61,11 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
+                if event.type == pygame.WINDOWMAXIMIZED:
+                    self.window = pygame.display.set_mode(size=(WIDTH, HEIGHT),
+                                                          flags=pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.SCALED | pygame.FULLSCREEN,
+                                                          depth=32,
+                                                          vsync=True)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         self.game_starts = True
@@ -99,6 +110,7 @@ class Game:
             for event in pygame.event.get():
 
                 if event.type == pygame.QUIT:
+                    pygame.quit()
                     sys.exit()
                 elif event.type == pygame.USEREVENT:
                     Wall.create_wall(window=self, width=WIDTH, height=HEIGHT)

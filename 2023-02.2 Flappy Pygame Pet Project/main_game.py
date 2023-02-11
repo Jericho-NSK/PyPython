@@ -25,12 +25,10 @@ class Game:
         self.score = self.score_font.render(str(self.score_text), True, 'red')
         self.track = HEIGHT // 2
         self.create_window()
-
         self.bird = Bird(self, WIDTH, HEIGHT)
-        self.menu = Menu(self)
+        self.menu = Menu(self, self.window)
         self.menu.mainloop(self.window)
 
-        self.mainloop()
 
     def create_window(self):
         self.bird_images = [pygame.image.load('images/' + bird).convert_alpha() for bird in Bird.images]
@@ -38,6 +36,7 @@ class Game:
         self.bg = pygame.image.load('images/bg2.png').convert()
         self.bg_rect = self.bg.get_rect()
         self.window.blit(self.bg, (self.bg_rect.x, self.bg_rect.y))
+        # print(pygame.display.is_fullscreen())
         pygame.display.set_caption('NOT a flappy bird')
         pygame.display.set_icon(self.bird_images[-1])
 
@@ -65,10 +64,12 @@ class Game:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.WINDOWMAXIMIZED:
-                    self.window = pygame.display.set_mode(size=(WIDTH, HEIGHT),
-                                                          flags=pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.SCALED | pygame.FULLSCREEN,
-                                                          depth=32,
-                                                          vsync=True)
+                    pygame.display.set_mode(flags=pygame.FULLSCREEN)
+                    print(pygame.display.toggle_fullscreen())
+                    # self.window = pygame.display.set_mode(size=(WIDTH, HEIGHT),
+                    #                                       flags=pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.SCALED | pygame.FULLSCREEN,
+                    #                                       depth=32,
+                    #                                       vsync=True)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         self.game_starts = True

@@ -1,5 +1,5 @@
-import pygame_menu
 import pygame
+import pygame_menu
 
 
 class Menu(pygame_menu.Menu):
@@ -14,13 +14,18 @@ class Menu(pygame_menu.Menu):
 
         self.create_menu(game, window)
 
+    @staticmethod
+    def qwerty(*args):
+        print(1, args)
+
     def create_menu(self, game, window):
-
         self.add.text_input('Name: ', default='Player')
-        full_screen = self.add.toggle_switch('Full screen', default=pygame.display.is_fullscreen())
+        self.add.button('Play', game.mainloop, align='align-left')
+        self.add.toggle_switch('Full screen', default=pygame.display.is_fullscreen(), onchange=lambda x: pygame.display.toggle_fullscreen())
+        # self.add.toggle_switch('Full screen', default=pygame.display.is_fullscreen(), onchange=lambda x: pygame.display.toggle_fullscreen())
+        # self.add.toggle_switch('Full screen', default=pygame.display.is_fullscreen(), onchange=lambda x: pygame.display.toggle_fullscreen())
 
 
-        self.add.button('Play', game.mainloop)
         self.add.button('Quit', pygame_menu.events.EXIT)
 
     #
@@ -28,15 +33,11 @@ class Menu(pygame_menu.Menu):
     #     print(window)
     #     # window.mainloop()
 
-
     def set_difficulty(self, value, difficulty):
         # Do the job here !
         pass
 
-    def start_the_game(self, window):...
-        # Do the job here !
-        # if self:
-        #     return window.start_window()
-
-
-
+    def start_the_game(self, window): ...
+    # Do the job here !
+    # if self:
+    #     return window.start_window()

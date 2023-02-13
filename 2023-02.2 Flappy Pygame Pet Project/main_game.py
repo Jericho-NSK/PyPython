@@ -7,6 +7,7 @@ from walls import Wall
 from menu import Menu
 
 pygame.init()
+# WIDTH, HEIGHT = 1920, 1080
 WIDTH, HEIGHT = 1280, 720
 FPS = 60
 
@@ -16,7 +17,7 @@ class Game:
     score_font = pygame.font.SysFont('comicsanms', size=48, italic=True)
     score_text = 0
     window = pygame.display.set_mode(size=(WIDTH, HEIGHT),
-                                     flags=pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.SCALED | pygame.RESIZABLE,
+                                     flags=pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.NOFRAME,
                                      depth=32,
                                      vsync=True)
 
@@ -28,7 +29,9 @@ class Game:
         self.bird = Bird(self, WIDTH, HEIGHT)
         self.menu = Menu(self, self.window)
         self.menu.mainloop(self.window)
-
+    @staticmethod
+    def full_screen():
+        pygame.display.is_fullscreen()
 
     def create_window(self):
         self.bird_images = [pygame.image.load('images/' + bird).convert_alpha() for bird in Bird.images]
@@ -36,7 +39,6 @@ class Game:
         self.bg = pygame.image.load('images/bg2.png').convert()
         self.bg_rect = self.bg.get_rect()
         self.window.blit(self.bg, (self.bg_rect.x, self.bg_rect.y))
-        # print(pygame.display.is_fullscreen())
         pygame.display.set_caption('NOT a flappy bird')
         pygame.display.set_icon(self.bird_images[-1])
 
@@ -63,13 +65,6 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-                if event.type == pygame.WINDOWMAXIMIZED:
-                    pygame.display.set_mode(flags=pygame.FULLSCREEN)
-                    print(pygame.display.toggle_fullscreen())
-                    # self.window = pygame.display.set_mode(size=(WIDTH, HEIGHT),
-                    #                                       flags=pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.SCALED | pygame.FULLSCREEN,
-                    #                                       depth=32,
-                    #                                       vsync=True)
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         self.game_starts = True

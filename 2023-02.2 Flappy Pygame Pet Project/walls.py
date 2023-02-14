@@ -40,3 +40,4 @@ class Wall(pygame.sprite.Sprite):
 
         for reverse in [0, 1]:
             Wall(game, width, game.track, reverse)
+        return

@@ -114,25 +114,24 @@ class Game:
         # Wall.create_wall(game=self, width=WIDTH, height=HEIGHT)
         self.game_starts = True
         self.last_wall_time = perf_counter()
-        self.mt2 = perf_counter()
         pygame.time.set_timer(pygame.USEREVENT, int(self.wall_timer))
 
         while True:
             self.game_starts = True
             for event in pygame.event.get():
 
-                if event.type == pygame.USEREVENT:
-                    print(1, self.wall_timer, (perf_counter() - self.last_wall_time) * 1000)
+                if event.type == pygame.USEREVENT and (perf_counter() - self.last_wall_time) >= 1:
+                    print(1, self.wall_timer, perf_counter() - self.last_wall_time)
                     self.last_wall_time = perf_counter()
                     self.wall_timer = 1000
                     print(2, self.wall_timer, (perf_counter() - self.last_wall_time)*1000)
                     Wall.create_wall(game=self, width=WIDTH, height=HEIGHT)
+                    break
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        print(1, self.wall_timer, (perf_counter() - self.last_wall_time)*1000)
-                        self.mt = perf_counter()
-                        self.wall_timer = 1000 - (perf_counter() - self.last_wall_time)*1000
-                        print(2, self.wall_timer, (perf_counter() - self.last_wall_time)*1000)
+                        print(3, self.wall_timer, (perf_counter() - self.last_wall_time)*1000)
+                        self.wall_timer -= (perf_counter() - self.last_wall_time)*1000
+                        print(4, self.wall_timer, (perf_counter() - self.last_wall_time)*1000)
                         self.menu.call_menu(self, self.window)
                     elif event.key == pygame.K_SPACE:
                         self.bird.jump = 35

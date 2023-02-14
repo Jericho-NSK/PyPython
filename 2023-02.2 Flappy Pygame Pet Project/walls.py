@@ -30,6 +30,7 @@ class Wall(pygame.sprite.Sprite):
 
     @staticmethod
     def create_wall(game, width, height):
+        # game.wall_timer = 1000
         dy = int(height * uniform(-0.1, 0.1))
         game.track += dy
         if game.track > height - 150:

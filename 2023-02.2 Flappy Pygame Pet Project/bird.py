@@ -26,7 +26,7 @@ class Bird(pygame.Surface):
         else:
             self.timer -= 1
 
-        if game.game_starts:
+        if game.game_starts and not game.menu.is_enabled():
             self.rect.centery += 1
             if self.rect.centery > height - height / 24:
                 game.end_window()

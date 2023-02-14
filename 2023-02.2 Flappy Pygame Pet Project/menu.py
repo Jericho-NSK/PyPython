@@ -19,7 +19,7 @@ class Menu(pygame_menu.Menu):
 
         while True:
             self.enable()
-            game.game_starts = False
+            # game.game_starts = False
             game.update_window()
             # pygame.display.update()
             # game.walls.draw(window)

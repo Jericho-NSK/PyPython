@@ -1,6 +1,7 @@
 import sys
 
 import pygame
+from time import perf_counter
 
 from bird import Bird
 from walls import Wall
@@ -22,6 +23,8 @@ class Game:
                                      vsync=True)
 
     def __init__(self):
+        self.last_wall_time = 0
+        self.wall_timer = 1000
         self.game_starts = False
         self.score = self.score_font.render(str(self.score_text), True, 'red')
         self.track = HEIGHT // 2
@@ -29,6 +32,7 @@ class Game:
         self.bird = Bird(self, WIDTH, HEIGHT)
         self.menu = Menu(self, self.window)
         self.menu.call_menu(self, self.window)
+
         # self.menu.mainloop(self.window)
 
     def create_window(self):
@@ -41,7 +45,7 @@ class Game:
         pygame.display.set_icon(self.bird_images[-1])
 
     def update_window(self):
-        if self.game_starts:
+        if self.game_starts and not self.menu.is_enabled():
             self.walls.update(self)
             self.crash()
             self.bg_rect.x -= 1
@@ -108,21 +112,27 @@ class Game:
         self.menu.disable()
         # self.start_window()
         # Wall.create_wall(game=self, width=WIDTH, height=HEIGHT)
-        # self.game_starts = True
-        pygame.time.set_timer(pygame.USEREVENT, 1000)
+        self.game_starts = True
+        self.last_wall_time = perf_counter()
+        self.mt2 = perf_counter()
+        pygame.time.set_timer(pygame.USEREVENT, int(self.wall_timer))
 
         while True:
             self.game_starts = True
             for event in pygame.event.get():
 
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif event.type == pygame.USEREVENT:
+                if event.type == pygame.USEREVENT:
+                    print(1, self.wall_timer, (perf_counter() - self.last_wall_time) * 1000)
+                    self.last_wall_time = perf_counter()
+                    self.wall_timer = 1000
+                    print(2, self.wall_timer, (perf_counter() - self.last_wall_time)*1000)
                     Wall.create_wall(game=self, width=WIDTH, height=HEIGHT)
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        # print(pygame.time.Clock.get_rawtime(pygame.USEREVENT))
+                        print(1, self.wall_timer, (perf_counter() - self.last_wall_time)*1000)
+                        self.mt = perf_counter()
+                        self.wall_timer = 1000 - (perf_counter() - self.last_wall_time)*1000
+                        print(2, self.wall_timer, (perf_counter() - self.last_wall_time)*1000)
                         self.menu.call_menu(self, self.window)
                     elif event.key == pygame.K_SPACE:
                         self.bird.jump = 35

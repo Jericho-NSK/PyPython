@@ -9,7 +9,6 @@ from window import Window
 
 class Game:
     walls = pygame.sprite.Group()
-    # score_font = pygame.font.SysFont('comicsanms', size=48, italic=True)
     score_text = 0
 
     def __init__(self):

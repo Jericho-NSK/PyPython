@@ -1,6 +1,7 @@
 import pygame
-from images_and_sounds import Images
+
 from consts import HEIGHT, WIDTH, FPS, BIRD_SIZE
+from images_and_sounds import Images
 
 
 class Bird(pygame.Surface):
@@ -37,5 +38,5 @@ class Bird(pygame.Surface):
                 self.rect.centerx -= 4
             if (key[pygame.K_d] or key[pygame.K_RIGHT]) and self.rect.right < WIDTH - self.rect.width:
                 self.rect.centerx += 4
-            if (key[pygame.K_s] or key[pygame.K_DOWN]):
+            if key[pygame.K_s] or key[pygame.K_DOWN]:
                 self.rect.centery += 1

@@ -1,27 +1,24 @@
 import pygame
 
-pygame.init()
-from consts import HEIGHT, WIDTH, FPS
-from window import Window
 from bird import Bird
-from walls import Wall
+from consts import HEIGHT, score_font
 from menu import Menu
-
+from walls import Wall
+from window import Window
 
 
 class Game:
     walls = pygame.sprite.Group()
-    score_font = pygame.font.SysFont('comicsanms', size=48, italic=True)
+    # score_font = pygame.font.SysFont('comicsanms', size=48, italic=True)
     score_text = 0
-
 
     def __init__(self):
         self.game_starts = False
-        self.score = self.score_font.render(str(self.score_text), True, 'red')
+        self.score = score_font.render(str(self.score_text), True, 'red')
         self.track = HEIGHT // 2
         self.window = Window()
         self.bird = Bird()
-        self.menu = Menu(self, Window.window)
+        self.menu = Menu(self)
         self.menu.call_menu(self)
 
     def crash(self):
@@ -44,8 +41,9 @@ class Game:
                 if event.type == pygame.USEREVENT:
                     Wall.create_wall(game=self)
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:...
-                        # self.menu.call_menu(self, self.window)  # no pauses, only hardcore!
+                    if event.key == pygame.K_ESCAPE:
+                        ...
+                    # self.menu.call_menu(self, self.window)  # no pauses, only hardcore!
                     elif event.key == pygame.K_SPACE:
                         self.bird.jump = 35
                     elif event.key == pygame.K_w:

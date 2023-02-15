@@ -1,8 +1,9 @@
 from random import uniform
 
 import pygame
-from images_and_sounds import Images
+
 from consts import HEIGHT, WIDTH
+from images_and_sounds import Images
 
 
 class Wall(pygame.sprite.Sprite):

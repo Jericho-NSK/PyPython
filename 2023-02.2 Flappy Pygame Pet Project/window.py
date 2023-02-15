@@ -58,9 +58,3 @@ class Window:
                     self.start_window(game)
                     return
             self.update_window(game)
-
-
-
-
-
-

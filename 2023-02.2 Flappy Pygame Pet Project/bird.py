@@ -1,26 +1,25 @@
 import pygame
+from images_and_sounds import Images
+from consts import HEIGHT, WIDTH, FPS, BIRD_SIZE
 
 
 class Bird(pygame.Surface):
-    size = 40, 30
-    images = 'bird_up.png', 'bird_down.png', 'bird_crash.png'
+    timer = FPS // 2
 
-    timer = 30
-
-    def __init__(self, game, width, height):
-        super().__init__(size=self.size)
+    def __init__(self):
+        super().__init__(size=BIRD_SIZE)
         self.rect = self.get_rect()
-        self.rect.center = width // 10, height // 3
-        self.image = game.bird_images[1]
+        self.rect.center = WIDTH // 10, HEIGHT // 3
+        self.image = Images.bird_images[1]
         self.jump = 0
         self.wings_up = False
 
-    def flying(self, game, FPS=60, width=None, height=None):
+    def flying(self, game):
         if self.jump:
             self.rect.centery -= int((0.1 * self.jump) ** 2) - 1
             self.jump -= 1
         if not self.timer:
-            self.image = game.bird_images[self.wings_up]
+            self.image = Images.bird_images[self.wings_up]
             self.wings_up = not self.wings_up
             self.timer = FPS // 3
         else:
@@ -28,13 +27,13 @@ class Bird(pygame.Surface):
 
         if game.game_starts and not game.menu.is_enabled():
             self.rect.centery += 1
-            if self.rect.centery > height - height / 24:
-                game.end_window()
-            if self.rect.centery < 0:
-                self.rect.centery = 0
+            if self.rect.bottom > HEIGHT - self.rect.height // 2:
+                self.rect.bottom = HEIGHT - self.rect.height // 2
+            if self.rect.top < -self.rect.height // 2:
+                self.rect.top = -self.rect.height // 2
 
             key = pygame.key.get_pressed()
             if (key[pygame.K_a] or key[pygame.K_LEFT]) and self.rect.centerx > 0:
                 self.rect.centerx -= 4
-            if (key[pygame.K_d] or key[pygame.K_RIGHT]) and self.rect.right < width - self.rect.width:
+            if (key[pygame.K_d] or key[pygame.K_RIGHT]) and self.rect.right < WIDTH - self.rect.width:
                 self.rect.centerx += 4

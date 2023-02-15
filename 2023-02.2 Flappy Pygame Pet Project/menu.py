@@ -1,5 +1,6 @@
 import pygame
 import pygame_menu
+from window import Window
 
 
 class Menu(pygame_menu.Menu):
@@ -15,12 +16,12 @@ class Menu(pygame_menu.Menu):
         self.create_menu(game, window)
         # self.call_menu(game, window)
 
-    def call_menu(self, game, window):
+    def call_menu(self, game, window=None):
 
         while True:
             self.enable()
             # game.game_starts = False
-            game.update_window()
+            game.window.update_window(game)
             # pygame.display.update()
             # game.walls.draw(window)
             # window.blit(game.score, (20, 20))

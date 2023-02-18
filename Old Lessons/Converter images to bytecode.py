@@ -3,7 +3,7 @@ from tkinter import PhotoImage
 
 from PIL import Image
 
-icon = Image.open(r'G:\Python\PyPython\2023-02.2 Flappy Pygame Pet Project\images\original_bg2.png', mode='r').resize((1440, 720)).crop()  #
+icon = Image.open(r'G:\Python\PyPython\2023-02.2 Flappy Pygame Pet Project\images\original_heart.png', mode='r').resize((60, 50)).crop()  #
 # требуемый размер
 # icon = Image.open(r'G:\Python\PyPython\2023-03 Pygame\cart.png', mode='r').reduce(5).crop()  # Уменьшение в 10 раз
 icon_arr = BytesIO()
@@ -16,5 +16,5 @@ byte_icon = b'...'  # <- тут длинная строка в байтовом 
 
 # final_img = PhotoImage(data=byte_icon, format='png')
 
-with open(r'G:\Python\PyPython\2023-02.2 Flappy Pygame Pet Project\images\bg2.png', 'wb') as file:  # Сохранение в новый файл
+with open(r'G:\Python\PyPython\2023-02.2 Flappy Pygame Pet Project\images\heart.png', 'wb') as file:  # Сохранение в новый файл
     file.write(icon_arr)

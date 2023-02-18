@@ -3,6 +3,7 @@ import pygame
 from constants import HEIGHT, WIDTH, START_TRACK, FPS, WINDOW, FONT
 from images_and_sounds import Images
 from walls import Wall
+from menus import Menus
 
 
 class Window:
@@ -39,7 +40,7 @@ class Window:
         #     game.crash_menu.draw(self.window)
         if game.bird.image != Images.bird_images[-1]:
             game.bird.flying(game)
-        if not game.menu.main_menu.is_enabled():
+        if game.game_starts:
             pygame.display.update()
         pygame.time.Clock().tick(FPS)
 
@@ -57,14 +58,15 @@ class Window:
         game.bird.timer = 0
         game.bird.jump = 0
         game.bird.image = Images.bird_images[-1]
-        # game.crash_menu.call_menu(game)
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    game.bird.rect.center = WIDTH // 10, HEIGHT // 3
-                    game.bird.image = Images.bird_images[0]
-                    for wall in game.walls:
-                        wall.kill()
-                    # self.start_window(game)
-                    return
-            self.update_window(game)
+        game.menu.about_menu.enable()
+        game.menu.call_menu(game, True)
+        # while True:
+        #     for event in pygame.event.get():
+        #         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+        #             game.bird.rect.center = WIDTH // 10, HEIGHT // 3
+        #             game.bird.image = Images.bird_images[0]
+        #             for wall in game.walls:
+        #                 wall.kill()
+        #             # self.start_window(game)
+        #             return
+        #     self.update_window(game)

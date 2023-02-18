@@ -18,13 +18,18 @@ class Menus:
                                  height=2 * HEIGHT // 3,
                                  theme=theme,
                                  )
-
+    # main_menu.enable()
     settings_menu = pygame_menu.Menu(title='Settings',
                                      width=2 * WIDTH // 3,
                                      height=2 * HEIGHT // 3,
                                      theme=theme,
                                      )
 
+    about_menu = pygame_menu.Menu(title='About',
+                                     width=2 * WIDTH // 3,
+                                     height=2 * HEIGHT // 3,
+                                     theme=theme,
+                                     )
     about_menu = pygame_menu.Menu(title='About',
                                      width=2 * WIDTH // 3,
                                      height=2 * HEIGHT // 3,
@@ -57,23 +62,14 @@ class Menus:
         self.about_menu.add.button('Link to GitHub', lambda: open_new_tab('https://github.com/Jericho-NSK/PyPython/tree/main/2023-02.2%20Flappy%20Pygame%20Pet%20Project'))
         self.about_menu.add.button('Back', pygame_menu.events.BACK)
 
-    # theme = pygame_menu.themes.THEME_BLUE.copy()
-    # theme.set_background_color_opacity(0.5)
-    #
-    # def __init__(self, game):
-    #     super().__init__(title='Main Menu',
-    #                      width=2 * WIDTH // 3,
-    #                      height=2 * HEIGHT // 3,
-    #                      theme=self.theme,
-    #                      )
-    #     self.add.button('Play', game.mainloop)
-    #     self.add.toggle_switch('Full screen', default=pygame.display.is_fullscreen(), onchange=lambda x: pygame.display.toggle_fullscreen())
-    #     self.add.button('Exit', pygame_menu.events.EXIT)
-
-    def call_menu(self, game):
+    def call_menu(self, game, crash=False):
         while True:
-            self.main_menu.update(pygame.event.get())
-            self.main_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
+            if crash:
+                self.about_menu.update(pygame.event.get())
+                self.about_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
+            else:
+                self.main_menu.update(pygame.event.get())
+                self.main_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
 
         # while True:
         #     # game.game_starts = False

@@ -103,5 +103,5 @@ class About(Toplevel):
     @staticmethod
     def open_url(link):
         """Opening URL to GitHub"""
-        open_new_tab('https://github.com/Jericho-NSK/PyPython/tree/main/2023-02%20Minesweeper_Tkinter%20Pet%20Project')
+        open_new_tab('https://github.com/Jericho-NSK/PyPython/tree/main/2023-01.2%20Minesweeper_Tkinter%20Pet%20Project')
         link['fg'] = 'purple'

@@ -5,19 +5,39 @@ from constants import HEIGHT, WIDTH, FPS
 
 
 class Menus:
-    main_theme = pygame_menu.themes.THEME_BLUE.copy()
-    main_theme.set_background_color_opacity(0.5)
+    theme = pygame_menu.themes.THEME_BLUE.copy()
+    theme.set_background_color_opacity(0.5)
+    theme.widget_font_size = 50
+    theme.widget_selection_color = 'purple'
+    theme.widget_padding = 10
+
     main_menu = pygame_menu.Menu(title='Main Menu',
                                  width=2 * WIDTH // 3,
                                  height=2 * HEIGHT // 3,
-                                 theme=main_theme,
+                                 theme=theme,
                                  )
+
+    settings_menu = pygame_menu.Menu(title='Settings',
+                                     width=2 * WIDTH // 3,
+                                     height=2 * HEIGHT // 3,
+                                     theme=theme,
+                                     )
 
     def __init__(self, game):
         self.surface = game.main_window.window
         self.main_menu.add.button('Play', game.mainloop)
-        self.main_menu.add.toggle_switch('Full screen', default=pygame.display.is_fullscreen(), onchange=lambda x: pygame.display.toggle_fullscreen())
+        self.main_menu.add.button('Settings', self.settings_menu)
         self.main_menu.add.button('Exit', pygame_menu.events.EXIT)
+
+        self.settings_menu.add.toggle_switch('Full screen',
+                                             default=pygame.display.is_fullscreen(),
+                                             onchange=lambda x: pygame.display.toggle_fullscreen(),
+                                             )
+        self.settings_menu.add.button('Back', pygame_menu.events.BACK)
+
+
+
+
 
     # theme = pygame_menu.themes.THEME_BLUE.copy()
     # theme.set_background_color_opacity(0.5)

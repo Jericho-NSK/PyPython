@@ -1,6 +1,7 @@
+from webbrowser import open_new_tab
+
 import pygame
 import pygame_menu
-from webbrowser import open_new_tab
 
 from constants import HEIGHT, WIDTH, FPS
 
@@ -8,9 +9,9 @@ from constants import HEIGHT, WIDTH, FPS
 class Menus:
     theme = pygame_menu.themes.THEME_BLUE.copy()
     theme.set_background_color_opacity(0.5)
-    theme.widget_font_size = 40
+    theme.widget_font_size = 30
     theme.widget_font_color = 'blue'
-    theme.widget_selection_color = 'purple'
+    theme.widget_selection_color = 'green'
     theme.widget_padding = 10
 
     main_menu = pygame_menu.Menu(title='Main Menu',
@@ -26,93 +27,91 @@ class Menus:
                                      )
 
     about_menu = pygame_menu.Menu(title='About',
-                                     width=2 * WIDTH // 3,
-                                     height=2 * HEIGHT // 3,
-                                     theme=theme,
-                                     )
+                                  width=2 * WIDTH // 3,
+                                  height=2 * HEIGHT // 3,
+                                  theme=theme,
+                                  )
+
     about_menu = pygame_menu.Menu(title='About',
-                                     width=2 * WIDTH // 3,
-                                     height=2 * HEIGHT // 3,
-                                     theme=theme,
-                                     )
+                                  width=2 * WIDTH // 3,
+                                  height=2 * HEIGHT // 3,
+                                  theme=theme,
+                                  )
+
+    crash_menu = pygame_menu.Menu(title='CRASH!',
+                                  width=2 * WIDTH // 3,
+                                  height=2 * HEIGHT // 3,
+                                  theme=theme,
+                                  )
+
+    exit_menu = pygame_menu.Menu(title='Exit?',
+                                 width=WIDTH // 3,
+                                 height=HEIGHT // 3,
+                                 theme=theme,
+                                 )
 
     def __init__(self, game):
         self.surface = game.main_window.window
-        self.main_menu.add.button('Play', game.mainloop)
-        self.main_menu.add.button('Settings', self.settings_menu)
-        self.main_menu.add.button('About', self.about_menu)
-        self.main_menu.add.button('Exit', pygame_menu.events.EXIT)
+        self.create_main_menu(game)
+        self.create_settings_menu()
+        self.create_about_menu()
+        self.create_exit_menu()
+        self.create_crash_menu(game)
 
-        self.settings_menu.add.toggle_switch('Full screen',
-                                             default=pygame.display.is_fullscreen(),
-                                             onchange=lambda x: pygame.display.toggle_fullscreen(),
-                                             )
-        self.settings_menu.add.toggle_switch('Music',
-                                             default=pygame.display.is_fullscreen(),
-                                             onchange=lambda x: pygame.display.toggle_fullscreen(),
-                                             )
-        self.settings_menu.add.toggle_switch('Sounds',
-                                             default=pygame.display.is_fullscreen(),
-                                             onchange=lambda x: pygame.display.toggle_fullscreen(),
-                                             )
-        self.settings_menu.add.button('Back', pygame_menu.events.BACK)
+    def create_main_menu(self, game):
+        self.main_menu.add.button('PLAY', game.mainloop)
+        self.main_menu.add.button('SETTINGS', self.settings_menu)
+        self.main_menu.add.button('ABOUT', self.about_menu)
+        self.main_menu.add.button('EXIT', self.exit_menu)
 
+    def create_settings_menu(self):
+        self.settings_menu.add.toggle_switch('FULL SCREEN',
+                                             default=pygame.display.is_fullscreen(),
+                                             onchange=lambda x: pygame.display.toggle_fullscreen(),
+                                             )
+        self.settings_menu.add.toggle_switch('MUSIC',
+                                             default=pygame.display.is_fullscreen(),
+                                             onchange=lambda x: pygame.display.toggle_fullscreen(),
+                                             )
+        self.settings_menu.add.toggle_switch('SOUNDS',
+                                             default=pygame.display.is_fullscreen(),
+                                             onchange=lambda x: pygame.display.toggle_fullscreen(),
+                                             )
+        self.settings_menu.add.button('BACK', pygame_menu.events.BACK)
+
+    def create_about_menu(self):
         self.about_menu.add.label('NOT a flappy bird v1.0\nCreated by Jericho for Pet-project', font_color=(0, 135, 0))
         self.about_menu.add.vertical_margin(30)
-        self.about_menu.add.button('Link to GitHub', lambda: open_new_tab('https://github.com/Jericho-NSK/PyPython/tree/main/2023-02.2%20Flappy%20Pygame%20Pet%20Project'))
-        self.about_menu.add.button('Back', pygame_menu.events.BACK)
+        self.about_menu.add.button('LINK TO GITHUB', lambda: open_new_tab(
+            'https://github.com/Jericho-NSK/PyPython/tree/main/2023-02.2%20Flappy%20Pygame%20Pet%20Project'))
+        self.about_menu.add.button('BACK', pygame_menu.events.BACK)
 
-    def call_menu(self, game, crash=False):
+    def create_exit_menu(self):
+        question = self.exit_menu.add.label('ARE YOU SURE?')
+        self.exit_menu.add.vertical_fill(self.exit_menu.get_height() - 2 * question.get_height())
+
+        yes = self.exit_menu.add.button('YES', pygame_menu.events.EXIT)
+        yes.set_float(float_status=True, origin_position=True)
+        yes.translate(0.15 * self.exit_menu.get_width(), self.exit_menu.get_height() - 2.3 * yes.get_height())
+
+        no = self.exit_menu.add.button('NO', pygame_menu.events.BACK)
+        no.set_float(float_status=True, origin_position=True)
+        no.translate(0.85 * self.exit_menu.get_width() - no.get_width(), self.exit_menu.get_height() - 2.3 * no.get_height())
+
+    def create_crash_menu(self, game):
+        self.crash_menu.add.label(f'YOU LOST A LIFE! {game.lives} TRIES LEFT' if game.lives else 'YOU LOSE!',
+                                  font_color=(235, 0, 0))
+        self.crash_menu.add.vertical_margin(30)
+        self.crash_menu.add.button('RESUME')
+        self.crash_menu.add.button('EXIT TO MAIN MENU')
+
+    def call_menu(self, game, crash=False, exit_=False):
         while True:
             if crash:
-                self.about_menu.update(pygame.event.get())
-                self.about_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
+                # self.crash_menu.update(pygame.event.get())
+                self.crash_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
+            elif exit_:
+                self.exit_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
             else:
-                self.main_menu.update(pygame.event.get())
+                # self.main_menu.update(pygame.event.get())
                 self.main_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
-
-        # while True:
-        #     # game.game_starts = False
-        #     game.main_window.update_window(game)
-            # pygame.display.update()
-            # game.walls.draw(window)
-            # window.blit(game.score, (20, 20))
-            # window.blit(game.bg, (game.bg_rect.x, game.bg_rect.y))
-            # window.blit(game.bird.image, (game.bird.rect.centerx, game.bird.rect.centery))
-            # game.bird.flying(game)
-            #
-            # for event in pygame.event.get():
-            #
-            #     if event.type == pygame.KEYDOWN:
-            #         if event.key == pygame.K_ESCAPE:
-            #             game.mainloop()
-            # if self.is_enabled():
-            #     self.update(pygame.event.get())
-            # self.draw(window)
-            # game.update_window()
-            # pygame.display.update()
-            # pygame.time.Clock().tick(60)
-
-
-class CrashMenu(pygame_menu.Menu):
-    theme = pygame_menu.themes.THEME_BLUE.copy()
-    theme.set_background_color_opacity(0.5)
-
-    def __init__(self, game):
-        super().__init__(title='Main Menu',
-                         width=2 * WIDTH // 3,
-                         height=2 * HEIGHT // 3,
-                         theme=self.theme,
-                         )
-        self.add.button('Continue', self.next_try, game)
-        self.add.button('Main Menu', game.menu.call_menu, game)
-        self.add.button('Exit', pygame_menu.events.EXIT)
-
-    def next_try(self, game):
-        game.mainloop()
-
-    def call_menu(self, game):
-        self.enable()
-        while True:
-            # game.game_starts = False
-            game.main_window.update_window(game)

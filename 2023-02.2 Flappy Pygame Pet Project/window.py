@@ -58,7 +58,7 @@ class Window:
         game.bird.timer = 0
         game.bird.jump = 0
         game.bird.image = Images.bird_images[-1]
-        game.menu.about_menu.enable()
+        game.menu.crash_menu.enable()
         game.menu.call_menu(game, True)
         # while True:
         #     for event in pygame.event.get():

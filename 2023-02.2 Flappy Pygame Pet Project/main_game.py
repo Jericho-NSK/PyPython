@@ -2,7 +2,7 @@ import pygame
 
 from bird import Bird
 from constants import HEIGHT, START_TRACK, FONT, DIFFICULTY_MODS
-from menus import Menus, CrashMenu
+from menus import Menus
 from walls import Wall
 from window import Window
 
@@ -13,7 +13,7 @@ class Game:
 
     def __init__(self):
         self.game_starts = False
-        # self.score = FONT.render(str(self.score_text), True, 'red')
+        self.lives = 3
         self.track = START_TRACK
         self.main_window = Window()
         self.bird = Bird()

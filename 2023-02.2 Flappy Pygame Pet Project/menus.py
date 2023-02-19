@@ -9,6 +9,7 @@ from constants import HEIGHT, WIDTH, FPS
 class Menus:
     theme = pygame_menu.themes.THEME_BLUE.copy()
     theme.set_background_color_opacity(0.5)
+    theme.widget_font = 'comicsansms'
     theme.widget_font_size = 30
     theme.widget_font_color = 'blue'
     theme.widget_selection_color = 'green'
@@ -109,12 +110,10 @@ class Menus:
     def call_menu(self, game, crash=False, exit_=False):
         while True:
             if crash:
-                # self.crash_menu.update(pygame.event.get())
                 self.crash_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
             elif exit_:
                 self.exit_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
             else:
-                # self.main_menu.update(pygame.event.get())
                 self.main_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
 
     def disable(self):

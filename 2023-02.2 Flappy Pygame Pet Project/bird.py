@@ -1,6 +1,6 @@
 import pygame
 
-from constants import HEIGHT, WIDTH, FPS, BIRD_SIZE
+from constants import HEIGHT, WIDTH, FPS, BIRD_SIZE, BIRD_START
 from images_and_sounds import Images
 
 
@@ -10,7 +10,7 @@ class Bird(pygame.Surface):
     def __init__(self):
         super().__init__(size=BIRD_SIZE)
         self.rect = self.get_rect()
-        self.rect.center = WIDTH // 10, HEIGHT // 3
+        self.rect.center = BIRD_START
         self.image = Images.bird_images[1]
         self.jump = 0
         self.wings_up = False
@@ -26,7 +26,8 @@ class Bird(pygame.Surface):
         else:
             self.timer -= 1
 
-        if game.game_starts and not game.menu.main_menu.is_enabled():
+        # if game.game_starts and not game.menu.main_menu.is_enabled():
+        if game.game_starts:
             self.rect.centery += 1
             if self.rect.bottom > HEIGHT - self.rect.height // 2:
                 self.rect.bottom = HEIGHT - self.rect.height // 2

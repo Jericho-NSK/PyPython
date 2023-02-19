@@ -33,10 +33,10 @@ class Game:
             # wall.kill()
 
     def mainloop(self):
-        self.menu.main_menu.disable()
-        # self.crash_menu.disable()
+        self.menu.disable()
         self.game_starts = True
         pygame.time.set_timer(pygame.USEREVENT, 3000 // Wall.speed)
+
         while True:
             self.game_starts = True
             for event in pygame.event.get():

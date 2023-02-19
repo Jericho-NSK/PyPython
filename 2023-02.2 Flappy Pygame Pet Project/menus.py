@@ -15,32 +15,32 @@ class Menus:
     theme.widget_padding = 10
 
     main_menu = pygame_menu.Menu(title='Main Menu',
-                                 width=2 * WIDTH // 3,
-                                 height=2 * HEIGHT // 3,
+                                 width=WIDTH // 2,
+                                 height=HEIGHT // 2,
                                  theme=theme,
                                  )
     # main_menu.enable()
     settings_menu = pygame_menu.Menu(title='Settings',
-                                     width=2 * WIDTH // 3,
-                                     height=2 * HEIGHT // 3,
+                                     width=WIDTH // 2,
+                                     height=HEIGHT // 2,
                                      theme=theme,
                                      )
 
     about_menu = pygame_menu.Menu(title='About',
-                                  width=2 * WIDTH // 3,
-                                  height=2 * HEIGHT // 3,
+                                  width=WIDTH // 2,
+                                  height=HEIGHT // 2,
                                   theme=theme,
                                   )
 
     about_menu = pygame_menu.Menu(title='About',
-                                  width=2 * WIDTH // 3,
-                                  height=2 * HEIGHT // 3,
+                                  width=WIDTH // 2,
+                                  height=HEIGHT // 2,
                                   theme=theme,
                                   )
 
     crash_menu = pygame_menu.Menu(title='CRASH!',
-                                  width=2 * WIDTH // 3,
-                                  height=2 * HEIGHT // 3,
+                                  width=WIDTH // 2,
+                                  height=HEIGHT // 1.7,
                                   theme=theme,
                                   )
 
@@ -99,11 +99,12 @@ class Menus:
         no.translate(0.85 * self.exit_menu.get_width() - no.get_width(), self.exit_menu.get_height() - 2.3 * no.get_height())
 
     def create_crash_menu(self, game):
-        self.crash_menu.add.label(f'YOU LOST A LIFE! {game.lives} TRIES LEFT' if game.lives else 'YOU LOSE!',
+        self.crash_menu.add.label(f'YOU LOST A LIFE! \nLIVES LEFT: {game.lives} ' if game.lives else 'YOU LOSE!',
                                   font_color=(235, 0, 0))
         self.crash_menu.add.vertical_margin(30)
-        self.crash_menu.add.button('RESUME')
-        self.crash_menu.add.button('EXIT TO MAIN MENU')
+        self.crash_menu.add.button('RESUME', game.mainloop)
+        self.crash_menu.add.button('MAIN MENU', self.main_menu)
+        self.crash_menu.add.button('EXIT', self.exit_menu)
 
     def call_menu(self, game, crash=False, exit_=False):
         while True:
@@ -115,3 +116,10 @@ class Menus:
             else:
                 # self.main_menu.update(pygame.event.get())
                 self.main_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
+
+    def disable(self):
+        self.main_menu.disable()
+        self.settings_menu.disable()
+        self.exit_menu.disable()
+        self.crash_menu.disable()
+        self.about_menu.disable()

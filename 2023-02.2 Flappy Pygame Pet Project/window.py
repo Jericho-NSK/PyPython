@@ -3,16 +3,15 @@ import pygame
 from constants import HEIGHT, WIDTH, START_TRACK, FPS, WINDOW, FONT
 from images_and_sounds import Images
 from walls import Wall
-from menus import Menus
 
 
 class Window:
     window = WINDOW
-    lives = 3
-    score_text = 0
+    # lives = 3
+    # score_text = 0
 
-    def __init__(self):
-        self.score = FONT.render(f'SCORE: {self.score_text}', True, 'red')
+    def __init__(self, game):
+        self.score = FONT.render(f'SCORE: {game.score}', True, 'red')
         self.speed = FONT.render(f'SPEED: {Wall.speed}', True, 'red')
         self.bg_rect = Images.bg.get_rect()
         self.heart_rect = Images.heart.get_rect()
@@ -32,25 +31,12 @@ class Window:
         self.window.blit(self.speed, (20, 60))
         self.window.blit(Images.heart, (WIDTH - self.heart_rect.w, self.heart_rect.y))
         self.window.blit(game.bird.image, (game.bird.rect.centerx, game.bird.rect.centery))
-        # if game.menu.main_menu.is_enabled():
-        #     game.menu.main_menu.update(pygame.event.get())
-            # game.menu.main_menu.draw(self.window)
-        # if game.crash_menu.is_enabled():
-        #     game.crash_menu.update(pygame.event.get())
-        #     game.crash_menu.draw(self.window)
         if game.bird.image != Images.bird_images[-1]:
             game.bird.flying(game)
         if game.game_starts:
             pygame.display.update()
         pygame.time.Clock().tick(FPS)
 
-    # def start_window(self, game):
-    #     while True:
-    #         for event in pygame.event.get():
-    #             if event.type == pygame.KEYDOWN:
-    #                 if event.key == pygame.K_SPACE:
-    #                     return
-    #         self.update_window(game)
 
     def end_window(self, game):
         game.game_starts = False
@@ -58,8 +44,9 @@ class Window:
         game.bird.timer = 0
         game.bird.jump = 0
         game.bird.image = Images.bird_images[-1]
-        game.menu.crash_menu.enable()
-        game.menu.call_menu(game, True)
+        game.lives -= 1
+        # game.menu.crash_menu.enable()
+        game.menu.call_menu(game, crash=True)
         # while True:
         #     for event in pygame.event.get():
         #         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:

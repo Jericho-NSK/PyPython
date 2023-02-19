@@ -29,11 +29,11 @@ class Wall(pygame.sprite.Sprite):
         else:
             self.kill()
             if self.score_flag:
-                game.main_window.score_text += 100
-                game.main_window.score = FONT.render(f'SCORE: {game.main_window.score_text}', True, 'red')
-                if (game.main_window.score_text // 100 in DIFFICULTY_MODS or
-                        (game.main_window.score_text // 100 > DIFFICULTY_MODS[-1] and
-                         game.main_window.score_text % 5000 == 0)):
+                game.score += 100
+                game.main_window.score = FONT.render(f'SCORE: {game.score}', True, 'red')
+                if (game.score // 100 in DIFFICULTY_MODS or
+                        (game.score // 100 > DIFFICULTY_MODS[-1] and
+                         game.score % 5000 == 0)):
                     Wall.speed += 1
                     pygame.time.set_timer(pygame.USEREVENT, 3000 // Wall.speed)
                     game.main_window.speed = FONT.render(f'SPEED: {Wall.speed}', True, 'red')

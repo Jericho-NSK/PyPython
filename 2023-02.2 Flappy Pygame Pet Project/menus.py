@@ -4,6 +4,7 @@ import pygame
 import pygame_menu
 
 from constants import HEIGHT, WIDTH, FPS
+from walls import Wall
 
 
 class Menus:
@@ -59,7 +60,7 @@ class Menus:
         self.create_exit_menu()
 
     def create_main_menu(self, game):
-        self.main_menu.add.button('PLAY', game.mainloop)
+        self.main_menu.add.button('NEW GAME', game.new_game)
         self.main_menu.add.button('SETTINGS', self.settings_menu)
         self.main_menu.add.button('ABOUT', self.about_menu)
         self.main_menu.add.button('EXIT', self.exit_menu)
@@ -101,12 +102,11 @@ class Menus:
     def create_crash_menu(self, game):
         self.crash_menu.add.label(f'YOU LOST A LIFE!\nLIVES LEFT: {game.lives} '
                                   if game.lives
-                                  else f'YOU LOSE!\nYOUR SCORE: {game.score}',
+                                  else f'YOU LOSE ON SPEED {Wall.speed}!\nYOUR SCORE: {game.score}',
                                   font_color=(235, 0, 0))
         self.crash_menu.add.vertical_margin(30)
-        if game.lives:
-            self.crash_menu.add.button('RESUME', game.resume)
-
+        self.crash_menu.add.button('RESUME' if game.lives else 'NEW GAME',
+                                   game.resume_game if game.lives else game.new_game)
         self.crash_menu.add.button('MAIN MENU', self.main_menu)
         self.crash_menu.add.button('EXIT', self.exit_menu)
         self.crash_menu.force_surface_update()
@@ -114,9 +114,9 @@ class Menus:
     def call_menu(self, game, crash=False, exit_=False):
         self.crash_menu.clear()
         self.create_crash_menu(game)
+
         while True:
             if crash:
-
                 self.crash_menu.mainloop(self.surface,
                                          game.main_window.update_window(game),
                                          disable_loop=True,

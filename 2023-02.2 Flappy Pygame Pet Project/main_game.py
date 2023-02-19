@@ -1,7 +1,7 @@
 import pygame
 
 from bird import Bird
-from constants import START_TRACK, BIRD_START
+from constants import START_LIVES, START_TRACK, BIRD_START
 from images_and_sounds import Images
 from menus import Menus
 from walls import Wall
@@ -10,7 +10,7 @@ from window import Window
 
 class Game:
     walls = pygame.sprite.Group()
-    lives = 2
+    lives = START_LIVES
     score = 0
 
     def __init__(self):
@@ -24,10 +24,22 @@ class Game:
     def crash(self):
         for wall in self.walls:
             if wall.rect.collidepoint(self.bird.rect.midright) or wall.rect.collidepoint(self.bird.rect.bottomright):
-                self.main_window.end_window(self)
+                self.game_starts = False
+                self.track = START_TRACK
+                self.bird.timer = 0
+                self.bird.jump = 0
+                self.bird.image = Images.bird_images[-1]
+                self.lives -= 1
+                return self.menu.call_menu(self, crash=True)
             # self.sound_catch.play()
 
-    def resume(self):
+    def new_game(self):
+        self.lives = START_LIVES
+        self.score = 0
+        self.main_window = Window(self)
+        return self.resume_game()
+
+    def resume_game(self):
         self.bird.rect.center = BIRD_START
         self.bird.image = Images.bird_images[0]
         for wall in self.walls:

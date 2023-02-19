@@ -1,7 +1,8 @@
 import pygame
 
 from bird import Bird
-from constants import HEIGHT, START_TRACK, FONT, DIFFICULTY_MODS
+from constants import START_TRACK, BIRD_START
+from images_and_sounds import Images
 from menus import Menus
 from walls import Wall
 from window import Window
@@ -9,31 +10,32 @@ from window import Window
 
 class Game:
     walls = pygame.sprite.Group()
-    # score_text = 0
+    lives = 2
+    score = 0
 
     def __init__(self):
         self.game_starts = False
-        self.lives = 3
         self.track = START_TRACK
-        self.main_window = Window()
+        self.main_window = Window(self)
         self.bird = Bird()
         self.menu = Menus(self)
         self.menu.call_menu(self)
-        # self.menu.main_menu.enable()
-        # self.crash_menu = CrashMenu(self).disable()
-        # self.menu.call_menu(self)
 
     def crash(self):
         for wall in self.walls:
             if wall.rect.collidepoint(self.bird.rect.midright) or wall.rect.collidepoint(self.bird.rect.bottomright):
-                return self.main_window.end_window(self)
+                self.main_window.end_window(self)
             # self.sound_catch.play()
-            # self.score_counter += bomb.score
-            # self.score_text = self.score_font.render(str(self.score_counter), True, 'red')
-            # wall.kill()
+
+    def resume(self):
+        self.bird.rect.center = BIRD_START
+        self.bird.image = Images.bird_images[0]
+        for wall in self.walls:
+            wall.kill()
+        self.mainloop()
 
     def mainloop(self):
-        self.menu.disable()
+        # self.menu.disable()
         self.game_starts = True
         pygame.time.set_timer(pygame.USEREVENT, 3000 // Wall.speed)
 

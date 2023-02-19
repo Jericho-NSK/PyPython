@@ -57,7 +57,6 @@ class Menus:
         self.create_settings_menu()
         self.create_about_menu()
         self.create_exit_menu()
-        self.create_crash_menu(game)
 
     def create_main_menu(self, game):
         self.main_menu.add.button('PLAY', game.mainloop)
@@ -100,21 +99,41 @@ class Menus:
         no.translate(0.85 * self.exit_menu.get_width() - no.get_width(), self.exit_menu.get_height() - 2.3 * no.get_height())
 
     def create_crash_menu(self, game):
-        self.crash_menu.add.label(f'YOU LOST A LIFE! \nLIVES LEFT: {game.lives} ' if game.lives else 'YOU LOSE!',
+        self.crash_menu.add.label(f'YOU LOST A LIFE!\nLIVES LEFT: {game.lives} '
+                                  if game.lives
+                                  else f'YOU LOSE!\nYOUR SCORE: {game.score}',
                                   font_color=(235, 0, 0))
         self.crash_menu.add.vertical_margin(30)
-        self.crash_menu.add.button('RESUME', game.mainloop)
+        if game.lives:
+            self.crash_menu.add.button('RESUME', game.resume)
+
         self.crash_menu.add.button('MAIN MENU', self.main_menu)
         self.crash_menu.add.button('EXIT', self.exit_menu)
+        self.crash_menu.force_surface_update()
 
     def call_menu(self, game, crash=False, exit_=False):
+        self.crash_menu.clear()
+        self.create_crash_menu(game)
         while True:
             if crash:
-                self.crash_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
+
+                self.crash_menu.mainloop(self.surface,
+                                         game.main_window.update_window(game),
+                                         disable_loop=True,
+                                         clear_surface=False,
+                                         fps_limit=FPS)
             elif exit_:
-                self.exit_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
+                self.exit_menu.mainloop(self.surface,
+                                        game.main_window.update_window(game),
+                                        disable_loop=True,
+                                        clear_surface=False,
+                                        fps_limit=FPS)
             else:
-                self.main_menu.mainloop(self.surface, game.main_window.update_window(game), disable_loop=True, clear_surface=False, fps_limit=FPS)
+                self.main_menu.mainloop(self.surface,
+                                        game.main_window.update_window(game),
+                                        disable_loop=True,
+                                        clear_surface=False,
+                                        fps_limit=FPS)
 
     def disable(self):
         self.main_menu.disable()

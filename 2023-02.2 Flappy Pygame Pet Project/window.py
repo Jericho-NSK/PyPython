@@ -19,14 +19,16 @@ class Window:
         self.window.blit(Images.bg, (self.bg_rect.x + self.bg_rect.width, 0))
         if self.bg_rect.x <= - self.bg_rect.width:
             self.bg_rect.x = 0
+
         game.walls.draw(self.window)
 
-        self.window.blit(self.score, (20, 20))
-        self.window.blit(self.speed, (20, 60))
-        for heart in range(game.lives):
-            self.window.blit(Images.heart, (WIDTH - self.heart_rect.w * (heart + 1), self.heart_rect.y))
+        self.window.blits((
+            (self.score, (20, 20)),
+            (self.speed, (20, 60)),
+            *((Images.heart, (WIDTH - self.heart_rect.w * (heart + 1), self.heart_rect.y)) for heart in range(game.lives)),
+            (game.bird.image, (game.bird.rect.centerx, game.bird.rect.centery)),
+        ), False)
 
-        self.window.blit(game.bird.image, (game.bird.rect.centerx, game.bird.rect.centery))
         if game.bird.image != Images.bird_images[-1]:
             game.bird.flying(game)
         if game.game_starts:

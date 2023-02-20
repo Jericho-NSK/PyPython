@@ -1,7 +1,7 @@
 import pygame
 
 from bird import Bird
-from constants import START_LIVES, START_TRACK, BIRD_START
+from constants import START_LIVES, START_TRACK, BIRD_START, SPEED
 from images_and_sounds import Images
 from menus import Menus
 from walls import Wall
@@ -30,12 +30,14 @@ class Game:
                 self.bird.jump = 0
                 self.bird.image = Images.bird_images[-1]
                 self.lives -= 1
+                self.menu.crash_menu.enable()
                 return self.menu.call_menu(self, crash=True)
             # self.sound_catch.play()
 
     def new_game(self):
         self.lives = START_LIVES
         self.score = 0
+        Wall.speed = SPEED
         self.main_window = Window(self)
         return self.resume_game()
 
@@ -47,7 +49,7 @@ class Game:
         self.mainloop()
 
     def mainloop(self):
-        # self.menu.disable()
+        self.menu.disable()
         self.game_starts = True
         pygame.time.set_timer(pygame.USEREVENT, 3000 // Wall.speed)
 
@@ -63,7 +65,7 @@ class Game:
                     # self.menu.call_menu(self, self.window)  # no pauses, only hardcore!
                     elif event.key == pygame.K_SPACE:
                         self.bird.jump = 35
-                    elif event.key == pygame.K_w:
+                    elif event.key == pygame.K_w or event.key == pygame.K_UP:
                         self.bird.jump = 25
             self.walls.update(self)
 

@@ -4,7 +4,7 @@ import pygame
 
 from constants import HEIGHT, WIDTH, SPEED, FONT, DIFFICULTY_MODS
 from images_and_sounds import Images
-from time import perf_counter
+
 
 class Wall(pygame.sprite.Sprite):
     wall_width = 108
@@ -24,9 +24,8 @@ class Wall(pygame.sprite.Sprite):
         self.add(game.walls)
 
     def update(self, game):
-        if self.rect.x > -self.wall_width:
-            self.rect.x -= self.speed
-        else:
+        self.rect.x -= self.speed
+        if self.rect.right < 0:
             self.kill()
             if self.score_flag:
                 game.score += 100

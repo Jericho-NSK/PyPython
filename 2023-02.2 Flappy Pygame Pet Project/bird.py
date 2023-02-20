@@ -16,17 +16,24 @@ class Bird(pygame.Surface):
         self.wings_up = False
 
     def flying(self, game):
-        if self.jump:
+        if self.jump > 14:
+            self.image = Images.bird_up
             self.rect.centery -= int((0.1 * self.jump) ** 2) - 1
             self.jump -= 1
-        if not self.timer:
+        elif self.jump:
+            self.image = Images.bird_images[self.wings_up]
+            self.rect.centery -= int((0.1 * self.jump) ** 2) - 1
+            self.jump -= 1
+            self.timer = 0
+            self.wings_up = False
+
+        if not self.timer and not self.jump:
             self.image = Images.bird_images[self.wings_up]
             self.wings_up = not self.wings_up
             self.timer = FPS // 3
         else:
             self.timer -= 1
 
-        # if game.game_starts and not game.menu.main_menu.is_enabled():
         if game.game_starts:
             self.rect.centery += 1
             if self.rect.bottom > HEIGHT - self.rect.height // 2:
@@ -35,9 +42,12 @@ class Bird(pygame.Surface):
                 self.rect.top = -self.rect.height // 2
 
             key = pygame.key.get_pressed()
-            if (key[pygame.K_a] or key[pygame.K_LEFT]) and self.rect.centerx > 0:
+            if any((key[pygame.K_a], key[pygame.K_LEFT])) and self.rect.centerx > 0:
                 self.rect.centerx -= 4
-            if (key[pygame.K_d] or key[pygame.K_RIGHT]) and self.rect.right < WIDTH - self.rect.width:
+            if any((key[pygame.K_d], key[pygame.K_RIGHT])) and self.rect.right < WIDTH - self.rect.width:
                 self.rect.centerx += 4
-            if key[pygame.K_s] or key[pygame.K_DOWN]:
+            if any((key[pygame.K_s], key[pygame.K_DOWN])) and not self.jump:
                 self.rect.centery += 1
+                self.image = Images.bird_down
+            if not any((key[pygame.K_s], key[pygame.K_DOWN], self.jump)):
+                self.image = Images.bird_images[self.wings_up]

@@ -1,3 +1,6 @@
+from inspect  import getouterframes, currentframe
+from  sys import exit, getrecursionlimit, setrecursionlimit
+
 import pygame
 
 from bird import Bird
@@ -31,7 +34,6 @@ class Game:
                 self.bird.image = Images.bird_images[-1]
                 self.lives -= 1
                 self.menu.crash_menu.enable()
-                return self.menu.call_menu(self, crash=True)
             # self.sound_catch.play()
 
     def new_game(self):
@@ -52,13 +54,16 @@ class Game:
         self.menu.disable()
         self.game_starts = True
         pygame.time.set_timer(pygame.USEREVENT, 3000 // Wall.speed)
+        if len(getouterframes(currentframe())) > getrecursionlimit() - 100:
+            setrecursionlimit(getrecursionlimit() + 100)
 
         while True:
             self.game_starts = True
             for event in pygame.event.get():
-
                 if event.type == pygame.USEREVENT:
                     Wall.create_wall(game=self)
+                elif event.type == pygame.QUIT:
+                    exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         ...
@@ -70,6 +75,9 @@ class Game:
             self.walls.update(self)
 
             self.crash()
+            if not self.game_starts:
+                self.menu.call_menu(self, crash=True)
+
             self.main_window.bg_rect.x -= 1
             self.main_window.update_window(self)
 

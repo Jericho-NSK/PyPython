@@ -17,3 +17,4 @@ WINDOW = pygame.display.set_mode(size=(WIDTH, HEIGHT),
                                  depth=32,
                                  vsync=True,
                                  )
+CLOCK = pygame.time.Clock()

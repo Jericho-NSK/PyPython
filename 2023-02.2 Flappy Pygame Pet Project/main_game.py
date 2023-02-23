@@ -4,7 +4,7 @@ from  sys import exit, getrecursionlimit, setrecursionlimit
 import pygame
 
 from bird import Bird
-from constants import START_LIVES, START_TRACK, BIRD_START, SPEED
+from constants import START_LIVES, START_TRACK, BIRD_START, SPEED, FPS
 from images_and_sounds import Images
 from menus import Menus
 from walls import Wall
@@ -66,8 +66,7 @@ class Game:
                     exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        ...
-                    # self.menu.call_menu(self, self.window)  # no pauses, only hardcore!
+                        self.main_window.escape_timer = 3 * FPS
                     elif event.key == pygame.K_SPACE:
                         self.bird.jump = 35
                     elif event.key == pygame.K_w or event.key == pygame.K_UP:

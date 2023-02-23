@@ -1,5 +1,4 @@
 import pygame
-from pygame_menu.examples.game_selector import DIFFICULTY
 
 pygame.init()
 

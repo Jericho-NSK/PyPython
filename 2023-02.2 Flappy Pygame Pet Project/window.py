@@ -1,6 +1,6 @@
 import pygame
 
-from constants import WIDTH, FPS, WINDOW, HEIGHT
+from constants import WIDTH, FPS, WINDOW, HEIGHT, CLOCK
 from elements import Elements
 from images_and_sounds import Images
 
@@ -38,4 +38,4 @@ class Window:
             game.bird.flying(game)
         if game.game_starts:
             pygame.display.update()
-        pygame.time.Clock().tick(FPS)
+        CLOCK.tick(FPS)

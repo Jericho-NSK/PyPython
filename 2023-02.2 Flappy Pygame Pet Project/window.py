@@ -29,10 +29,8 @@ class Window:
         ), False)
 
         if self.elements.escape_timer:
-            self.window.blit(self.elements.escape_up,
-                             (WIDTH // 2 - self.elements.escape_up_rect.w // 2, HEIGHT - 3 * self.elements.escape_up_rect.h))
-            self.window.blit(self.elements.escape_down,
-                             (WIDTH // 2 - self.elements.escape_down_rect.w // 2, HEIGHT - 2 * self.elements.escape_down_rect.h))
+            self.window.blit(self.elements.escape_up, self.elements.escape_up_rect.topleft)
+            self.window.blit(self.elements.escape_down, self.elements.escape_down_rect.topleft)
             self.elements.escape_timer -= 1
         if game.bird.image != Images.bird_images[-1]:
             game.bird.flying(game)

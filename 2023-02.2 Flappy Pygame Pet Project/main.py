@@ -1,3 +1,4 @@
+__version__ = '0.1b'
 from inspect import getouterframes, currentframe
 from sys import exit, getrecursionlimit, setrecursionlimit
 
@@ -10,6 +11,8 @@ from menus import Menus
 from walls import Wall
 from window import Window
 
+with open('test_log.txt', 'w') as f:
+    pass
 
 class Game:
     walls = pygame.sprite.Group()
@@ -65,6 +68,8 @@ class Game:
         while True:
             self.game_starts = True
             for event in pygame.event.get():
+                with open('test_log.txt', 'a') as f:
+                    f.write(f'event: {event}\nevent.type: {event.type}\nevent.dict: {event.__dict__}\n')
                 if event.type == pygame.USEREVENT:
                     Wall.create_wall(game=self)
                 elif event.type == pygame.QUIT:

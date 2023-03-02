@@ -163,3 +163,7 @@ images/
 
 # Text files
 *.txt
+
+# Files for .apk creating
+.buildozer/
+bin/

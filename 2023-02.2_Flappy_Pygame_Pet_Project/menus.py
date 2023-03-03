@@ -10,7 +10,7 @@ from walls import Wall
 class Menus:
     theme = pygame_menu.themes.THEME_BLUE.copy()
     theme.set_background_color_opacity(0.5)
-    theme.widget_font = 'comicsansms'
+    # theme.widget_font = 'comicsansms'
     theme.widget_font_size = 30
     theme.widget_font_color = 'blue'
     theme.widget_selection_color = 'green'

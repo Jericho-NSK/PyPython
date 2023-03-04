@@ -1,6 +1,6 @@
 import pygame
 
-from constants import WIDTH, FPS, WINDOW, HEIGHT, CLOCK
+from constants import WIDTH, FPS, WINDOW, CLOCK
 from elements import Elements
 from images_and_sounds import Images
 

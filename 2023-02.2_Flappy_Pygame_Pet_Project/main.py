@@ -1,9 +1,10 @@
 __version__ = '0.1b'
+
 from inspect import getouterframes, currentframe
 from sys import exit, getrecursionlimit, setrecursionlimit
 
 import pygame
-import platform
+
 from bird import Bird
 from constants import START_LIVES, START_TRACK, BIRD_START, SPEED, FPS
 from images_and_sounds import Images
@@ -11,8 +12,6 @@ from menus import Menus
 from walls import Wall
 from window import Window
 
-with open('test_log.txt', 'w') as f:
-    pass
 
 class Game:
     walls = pygame.sprite.Group()
@@ -68,13 +67,10 @@ class Game:
         while True:
             self.game_starts = True
             for event in pygame.event.get():
-                print(f'event: {event}\nevent.type: {event.type}\nevent.dict: {event.__dict__}\n')
                 if event.type == pygame.USEREVENT:
                     Wall.create_wall(game=self)
                 elif event.type == pygame.QUIT:
                     exit()
-                elif event.type == pygame.FINGERDOWN:
-                    self.bird.jump = 35
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE and not self.main_window.elements.escape_timer:
                         self.main_window.elements.escape_timer = 3 * FPS

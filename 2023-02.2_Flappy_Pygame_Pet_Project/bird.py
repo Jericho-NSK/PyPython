@@ -29,7 +29,8 @@ class Bird(pygame.Surface):
 
         if not self.timer and not self.jump:
             self.image = Images.bird_images[self.wings_up]
-            self.wings_up = not self.wings_up
+            self.wings_up ^= 1
+            # self.wings_up = not self.wings_up
             self.timer = FPS // 3
         else:
             self.timer -= 1

@@ -1,4 +1,4 @@
-__version__ = '0.1b'
+__version__ = '0.1'
 
 from inspect import getouterframes, currentframe
 from sys import exit, getrecursionlimit, setrecursionlimit
@@ -14,6 +14,10 @@ from window import Window
 
 
 class Game:
+    """Main class.
+    Contains all main game elements as own attributes.
+    Also contains some game mechanics like crash validation, mainloop and starting new game"""
+
     walls = pygame.sprite.Group()
     lives = START_LIVES
     score = 0
@@ -28,6 +32,7 @@ class Game:
         self.menu.call_menu(self)
 
     def crash(self):
+        """Checking that a collision has occurred"""
         for wall in self.walls:
             if wall.rect.collidepoint(self.bird.rect.midright) or wall.rect.collidepoint(self.bird.rect.bottomright) or self.breakdown:
                 self.game_starts = False
@@ -42,6 +47,7 @@ class Game:
             # self.sound_catch.play()
 
     def new_game(self):
+        """Updating flags if new game starts"""
         self.lives = START_LIVES
         self.score = 0
         Wall.speed = SPEED
@@ -49,6 +55,7 @@ class Game:
         self.resume_game()
 
     def resume_game(self):
+        """Updating flags if new game or new attempt starts"""
         self.breakdown = False
         self.menu.disable()
         self.game_starts = True
@@ -59,6 +66,7 @@ class Game:
         self.mainloop()
 
     def mainloop(self):
+        """Main game process"""
         pygame.time.set_timer(pygame.USEREVENT, 3000 // Wall.speed)
 
         if len(getouterframes(currentframe())) > getrecursionlimit() - 100:

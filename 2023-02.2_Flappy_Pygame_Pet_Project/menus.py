@@ -8,6 +8,7 @@ from walls import Wall
 
 
 class Menus:
+    """Class for creating menus"""
     theme = pygame_menu.themes.THEME_BLUE.copy()
     theme.set_background_color_opacity(0.5)
     theme.widget_font = 'comicsansms'
@@ -78,7 +79,7 @@ class Menus:
         self.about_menu.add.label('NOT a flappy bird v1.0\nCreated by Jericho for Pet-project', font_color=(0, 135, 0))
         self.about_menu.add.vertical_margin(30)
         self.about_menu.add.button('LINK TO GITHUB', lambda: open_new_tab(
-            'https://github.com/Jericho-NSK/PyPython/tree/main/2023-02.2%20Flappy%20Pygame%20Pet%20Project'))
+            'https://github.com/Jericho-NSK/PyPython/tree/main/2023-02.2_Flappy_Pygame_Pet_Project'))
         self.about_menu.add.button('BACK', pygame_menu.events.BACK)
 
     def create_exit_menu(self):

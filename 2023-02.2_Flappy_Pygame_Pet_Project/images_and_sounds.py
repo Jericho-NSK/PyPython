@@ -19,3 +19,10 @@ class Images:
 
     wall_image = pygame.image.load(abspath + 'images/column.png').convert_alpha()
     heart = pygame.image.load(abspath + 'images/heart.png').convert_alpha()
+
+
+class Sounds:
+    """Class for loading sounds.
+    Maybe I'll fill it in later.
+    Or not. Who knows?"""
+    pass

@@ -6,6 +6,7 @@ abspath = os.getcwd() + "/"
 
 
 class Images:
+    """Class for loading images and their processing"""
     images = 'bird_up.png', 'bird_down.png', 'bird_crash.png'
     bird_images = [pygame.image.load(abspath + 'images/' + bird).convert_alpha() for bird in images]
     bird_up = pygame.transform.rotate(bird_images[1], angle=15)

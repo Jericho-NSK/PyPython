@@ -1,4 +1,4 @@
-from random import randint, choice
+from random import choice
 
 import pygame
 
@@ -8,6 +8,7 @@ pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.init()
 
 WIDTH, HEIGHT = 1280, 720
+# WIDTH, HEIGHT = 1920, 1010
 FPS = 60
 
 
@@ -67,7 +68,7 @@ class Game:
 
     def mainloop(self):
         game_exit = False
-        pygame.time.set_timer(pygame.USEREVENT, 2000)
+        pygame.time.set_timer(pygame.USEREVENT, 1000)
 
         while True:
             for event in pygame.event.get():
